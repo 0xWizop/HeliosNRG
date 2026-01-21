@@ -1,0 +1,16 @@
+workload_name,workload_type,runtime_hours,instance_type,gpu_model,gpu_count,cpu_cores,memory_gb,region,provider,cost_usd,power_watts,timestamp
+GPT-Fine-Tuning-v2,training,48.5,p4d.24xlarge,A100-40GB,8,96,1152,us-east-1,aws,1589.35,,2024-01-10T00:00:00Z
+Llama-2-13B-Training,training,72.0,p4d.24xlarge,A100-40GB,8,96,1152,us-east-1,aws,2359.44,,2024-01-12T00:00:00Z
+Embedding-Model-Train,training,12.0,g5.12xlarge,A10G,4,48,192,us-west-2,aws,68.06,,2024-01-14T00:00:00Z
+Text-Classification-FT,training,4.5,g5.4xlarge,A10G,1,16,64,us-west-2,aws,7.31,,2024-01-15T08:00:00Z
+Chat-API-Inference,inference,720.0,g4dn.xlarge,T4,1,4,16,us-east-1,aws,378.72,,2024-01-01T00:00:00Z
+Embedding-API,inference,720.0,inf2.xlarge,Inferentia2,1,4,32,eu-west-1,aws,545.76,,2024-01-01T00:00:00Z
+Image-Gen-API,inference,360.0,g5.2xlarge,A10G,1,8,32,us-west-2,aws,436.32,,2024-01-01T00:00:00Z
+Batch-Summarization,batch,24.0,g5.4xlarge,A10G,1,16,64,us-west-2,aws,38.98,,2024-01-08T00:00:00Z
+Batch-Translation,batch,18.0,g5.4xlarge,A10G,1,16,64,eu-central-1,aws,29.23,,2024-01-09T00:00:00Z
+Nightly-Retraining,training,8.0,p3.8xlarge,V100,4,32,244,us-east-1,aws,97.92,,2024-01-15T02:00:00Z
+Dev-Notebook-GPU,interactive,40.0,g4dn.xlarge,T4,1,4,16,us-east-1,aws,21.04,,2024-01-01T00:00:00Z
+Research-Experiments,interactive,120.0,p3.2xlarge,V100,1,8,61,us-west-2,aws,367.20,,2024-01-01T00:00:00Z
+Model-Evaluation,batch,6.0,g5.xlarge,A10G,1,4,16,us-east-1,aws,6.04,,2024-01-14T10:00:00Z
+Stable-Diffusion-Train,training,96.0,p4d.24xlarge,A100-40GB,8,96,1152,eu-north-1,aws,3145.92,3200,2024-01-05T00:00:00Z
+Vision-Model-FT,training,16.0,g5.12xlarge,A10G,4,48,192,us-east-1,aws,90.75,,2024-01-11T00:00:00Z

@@ -1,0 +1,13 @@
+workload_id,workload_name,provider,region,instance_type,vcpus,memory_gb,runtime_hours,avg_cpu_utilization,avg_memory_utilization,start_time,end_time
+multi-ml-001,Cross-Cloud ML Training,AWS,us-east-1,p3.2xlarge,8,61,18.5,82.4,68.5,2026-01-15T06:00:00Z,2026-01-16T00:30:00Z
+multi-ml-002,Distributed Training Azure,Azure,westus2,Standard_NC12s_v3,12,224,22.8,89.2,74.8,2026-01-15T08:00:00Z,2026-01-16T06:48:00Z
+multi-ml-003,GCP Vertex Pipeline,GCP,us-central1,n1-highmem-8-nvidia-tesla-v100,8,52,14.2,78.5,62.4,2026-01-15T10:00:00Z,2026-01-16T00:12:00Z
+multi-data-001,AWS Redshift ETL,AWS,us-west-2,ra3.4xlarge,12,96,6.8,58.4,82.5,2026-01-15T02:00:00Z,2026-01-15T08:48:00Z
+multi-data-002,Azure Databricks Job,Azure,eastus2,Standard_DS4_v2,8,28,4.5,72.8,65.4,2026-01-15T03:00:00Z,2026-01-15T07:30:00Z
+multi-data-003,GCP Dataproc Cluster,GCP,europe-west1,n2-standard-4,4,16,3.2,65.2,58.8,2026-01-15T04:00:00Z,2026-01-15T07:12:00Z
+multi-web-001,AWS EKS Production,AWS,eu-west-1,m5.2xlarge,8,32,720,42.5,55.8,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+multi-web-002,Azure AKS Production,Azure,westeurope,Standard_D4s_v4,4,16,720,38.4,48.2,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+multi-web-003,GCP GKE Production,GCP,us-central1,e2-standard-4,4,16,720,45.8,52.4,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+multi-batch-001,Nightly Sync Job,AWS,us-east-1,c5.4xlarge,16,32,2.5,88.5,45.2,2026-01-15T23:00:00Z,2026-01-16T01:30:00Z
+multi-batch-002,Weekly Aggregation,Azure,northeurope,Standard_F8s_v2,8,16,4.8,92.4,52.8,2026-01-14T00:00:00Z,2026-01-14T04:48:00Z
+multi-batch-003,Monthly Reports,GCP,us-west1,c2-standard-8,8,32,6.2,78.5,68.4,2026-01-13T22:00:00Z,2026-01-14T04:12:00Z
