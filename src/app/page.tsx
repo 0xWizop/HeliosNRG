@@ -13,14 +13,14 @@ export default function HomePage() {
             <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
             <span className="text-sm font-mono font-medium tracking-wider">HELIOS</span>
           </div>
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4 sm:gap-8">
             <Link href="/pricing" className="text-neutral-500 hover:text-neutral-200 text-xs font-mono uppercase tracking-wider transition-colors">
               Pricing
             </Link>
-            <Link href="/methodology" className="text-neutral-500 hover:text-neutral-200 text-xs font-mono uppercase tracking-wider transition-colors">
+            <Link href="/methodology" className="hidden sm:block text-neutral-500 hover:text-neutral-200 text-xs font-mono uppercase tracking-wider transition-colors">
               Docs
             </Link>
-            <Link href="/dashboard" className="btn-primary">
+            <Link href="/dashboard" className="btn-primary whitespace-nowrap text-xs sm:text-sm px-3 sm:px-4 py-2">
               Launch App
             </Link>
           </div>

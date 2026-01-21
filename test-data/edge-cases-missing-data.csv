@@ -1,0 +1,16 @@
+workload_id,name,provider,region,instance_type,vcpus,memory_gb,gpu_model,gpu_count,runtime_hours,cpu_utilization,memory_utilization,cost,start_time,end_time
+EC-001,Unknown Provider Test,,us-east-1,m5.2xlarge,8,32,,0,24.0,65,45,96.00,2026-01-15T00:00:00Z,2026-01-16T00:00:00Z
+EC-002,Detect from Instance Type,,unknown,p4d.24xlarge,96,1152,A100,8,48.0,82,78,1920.00,2026-01-14T00:00:00Z,2026-01-16T00:00:00Z
+EC-003,Detect from Region,,,us-west-2,c6i.4xlarge,16,32,,0,12.0,71,38,48.00,2026-01-19T08:00:00Z,2026-01-19T20:00:00Z
+EC-004,GCP from Instance,,europe-west1,n1-standard-8,8,30,,0,8.0,55,42,24.00,2026-01-20T10:00:00Z,2026-01-20T18:00:00Z
+EC-005,Azure from Instance,,,Standard_D8s_v3,8,32,,0,16.0,48,51,64.00,2026-01-18T00:00:00Z,2026-01-18T16:00:00Z
+EC-006,GPU Hint Detection,,,unknown,A100,8,64,A100,4,36.0,88,72,1440.00,2026-01-16T00:00:00Z,2026-01-17T12:00:00Z
+EC-007,Minimal Data,,,,,4,16,,0,8.0,,,32.00,,
+EC-008,Region Alias Test,aws,virginia,m5.xlarge,4,16,,0,24.0,62,48,48.00,2026-01-15T00:00:00Z,2026-01-16T00:00:00Z
+EC-009,Region Alias GCP,gcp,iowa,n1-standard-4,4,15,,0,12.0,58,35,18.00,2026-01-19T00:00:00Z,2026-01-19T12:00:00Z
+EC-010,High Utilization Stress,,ap-northeast-1,g5.2xlarge,8,32,A10G,1,168.0,99,95,840.00,2026-01-08T00:00:00Z,2026-01-15T00:00:00Z
+EC-011,Low Utilization Idle,,eu-central-1,r5.4xlarge,16,128,,0,720.0,5,8,1440.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+EC-012,Zero Cost Entry,aws,us-east-1,t3.micro,2,1,,0,1.0,25,15,0.00,2026-01-20T12:00:00Z,2026-01-20T13:00:00Z
+EC-013,Very Long Runtime,gcp,us-central1,e2-medium,2,4,,0,2160.0,32,28,216.00,2025-12-01T00:00:00Z,2026-01-30T00:00:00Z
+EC-014,Burst Workload,azure,westus,Standard_F8s_v2,8,16,,0,0.5,98,92,2.00,2026-01-20T14:00:00Z,2026-01-20T14:30:00Z
+EC-015,On-Prem Test,on_prem,datacenter-1,bare-metal-gpu,64,512,A100,4,480.0,75,68,0.00,2026-01-01T00:00:00Z,2026-01-21T00:00:00Z

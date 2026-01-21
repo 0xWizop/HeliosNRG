@@ -1,14 +1,23 @@
 'use client';
 
-import { Info } from 'lucide-react';
+import { useState } from 'react';
+import { Info, ChevronDown, ChevronUp, CheckCircle2, AlertCircle, XCircle } from 'lucide-react';
+
+interface ConfidenceFactor {
+  factor: string;
+  impact: number;
+  reason: string;
+}
 
 interface ConfidenceBadgeProps {
   score: number;
   size?: 'sm' | 'md' | 'lg';
   showTooltip?: boolean;
+  factors?: ConfidenceFactor[];
 }
 
-export function ConfidenceBadge({ score, size = 'md', showTooltip = true }: ConfidenceBadgeProps) {
+export function ConfidenceBadge({ score, size = 'md', showTooltip = true, factors }: ConfidenceBadgeProps) {
+  const [showDetails, setShowDetails] = useState(false);
   const level = getConfidenceLevel(score);
   const colorClasses = getColorClasses(level);
   
@@ -20,18 +29,112 @@ export function ConfidenceBadge({ score, size = 'md', showTooltip = true }: Conf
 
   return (
     <div className="relative group">
-      <span className={`inline-flex items-center gap-1 font-mono uppercase tracking-wider border ${colorClasses} ${sizeClasses[size]}`}>
+      <button 
+        onClick={() => factors && setShowDetails(!showDetails)}
+        className={`inline-flex items-center gap-1 font-mono uppercase tracking-wider border ${colorClasses} ${sizeClasses[size]} ${factors ? 'cursor-pointer hover:opacity-80' : ''}`}
+      >
         {score.toFixed(0)}%
         {showTooltip && <Info className="w-3 h-3 opacity-50" />}
-      </span>
+        {factors && (showDetails ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />)}
+      </button>
       
-      {showTooltip && (
+      {showTooltip && !showDetails && (
         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-neutral-800 text-neutral-100 text-xs border border-neutral-700 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
           <div className="font-mono text-[10px] uppercase tracking-wider mb-0.5 text-neutral-400">Confidence: {getLevelLabel(level)}</div>
           <div className="text-neutral-300 text-[11px]">{getConfidenceDescription(level)}</div>
+          {factors && <div className="text-neutral-500 text-[10px] mt-1">Click to see breakdown</div>}
           <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-800" />
         </div>
       )}
+
+      {showDetails && factors && (
+        <ConfidenceBreakdown factors={factors} score={score} level={level} onClose={() => setShowDetails(false)} />
+      )}
+    </div>
+  );
+}
+
+function ConfidenceBreakdown({ 
+  factors, 
+  score, 
+  level,
+  onClose 
+}: { 
+  factors: ConfidenceFactor[]; 
+  score: number; 
+  level: string;
+  onClose: () => void;
+}) {
+  const positiveFactors = factors.filter(f => f.impact > 0).sort((a, b) => b.impact - a.impact);
+  const negativeFactors = factors.filter(f => f.impact < 0).sort((a, b) => a.impact - b.impact);
+  const neutralFactors = factors.filter(f => f.impact === 0);
+
+  return (
+    <div className="absolute top-full right-0 mt-2 w-80 bg-neutral-900 border border-neutral-700 shadow-xl z-50">
+      <div className="p-3 border-b border-neutral-800">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-xs font-mono uppercase tracking-wider text-neutral-400">Confidence Breakdown</div>
+            <div className="text-lg font-mono font-bold text-neutral-100">{score.toFixed(0)}% <span className="text-sm font-normal text-neutral-500">({getLevelLabel(level)})</span></div>
+          </div>
+          <button onClick={onClose} className="text-neutral-500 hover:text-neutral-300">
+            <XCircle className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      <div className="p-3 max-h-64 overflow-y-auto space-y-3">
+        {positiveFactors.length > 0 && (
+          <div>
+            <div className="text-[10px] font-mono uppercase tracking-wider text-emerald-500 mb-1.5">Strengths</div>
+            {positiveFactors.map((f, i) => (
+              <FactorItem key={i} factor={f} type="positive" />
+            ))}
+          </div>
+        )}
+
+        {negativeFactors.length > 0 && (
+          <div>
+            <div className="text-[10px] font-mono uppercase tracking-wider text-orange-500 mb-1.5">Limitations</div>
+            {negativeFactors.map((f, i) => (
+              <FactorItem key={i} factor={f} type="negative" />
+            ))}
+          </div>
+        )}
+
+        {neutralFactors.length > 0 && (
+          <div>
+            <div className="text-[10px] font-mono uppercase tracking-wider text-neutral-500 mb-1.5">Neutral</div>
+            {neutralFactors.map((f, i) => (
+              <FactorItem key={i} factor={f} type="neutral" />
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="p-3 border-t border-neutral-800 bg-neutral-800/50">
+        <p className="text-[10px] text-neutral-500">
+          {getConfidenceDescription(level)}. Improve by adding verified data sources.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function FactorItem({ factor, type }: { factor: ConfidenceFactor; type: 'positive' | 'negative' | 'neutral' }) {
+  const Icon = type === 'positive' ? CheckCircle2 : type === 'negative' ? AlertCircle : Info;
+  const iconColor = type === 'positive' ? 'text-emerald-500' : type === 'negative' ? 'text-orange-500' : 'text-neutral-500';
+  const impactColor = type === 'positive' ? 'text-emerald-400' : type === 'negative' ? 'text-orange-400' : 'text-neutral-400';
+
+  return (
+    <div className="flex items-start gap-2 py-1">
+      <Icon className={`w-3.5 h-3.5 ${iconColor} mt-0.5 shrink-0`} />
+      <div className="flex-1 min-w-0">
+        <p className="text-xs text-neutral-300 leading-tight">{factor.reason}</p>
+      </div>
+      <span className={`text-xs font-mono ${impactColor} shrink-0`}>
+        {factor.impact > 0 ? '+' : ''}{factor.impact}
+      </span>
     </div>
   );
 }

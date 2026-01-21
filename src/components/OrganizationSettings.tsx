@@ -17,7 +17,9 @@ import {
   Lock,
   Globe,
   Clock,
-  RefreshCw
+  RefreshCw,
+  Lightbulb,
+  RotateCcw
 } from 'lucide-react';
 import { doc, getDoc, updateDoc, onSnapshot, collection, query, where, getDocs } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -37,8 +39,10 @@ import {
   logAuditEvent
 } from '@/lib/firebase/enterprise';
 import { AuditLogPanel } from './AuditLog';
+import { useTutorial } from '@/contexts/TutorialContext';
+import { Loader } from './Loader';
 
-type SettingsTab = 'organization' | 'teams' | 'roles' | 'security' | 'audit';
+type SettingsTab = 'organization' | 'teams' | 'roles' | 'security' | 'preferences' | 'audit';
 
 export function OrganizationSettings() {
   const [activeTab, setActiveTab] = useState<SettingsTab>('organization');
@@ -107,13 +111,14 @@ export function OrganizationSettings() {
     { id: 'teams', label: 'Teams', icon: FolderTree },
     { id: 'roles', label: 'Roles & Permissions', icon: Shield },
     { id: 'security', label: 'Security', icon: Lock },
+    { id: 'preferences', label: 'Preferences', icon: Settings },
     { id: 'audit', label: 'Audit Log', icon: Clock },
   ];
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <RefreshCw className="w-6 h-6 text-amber-500 animate-spin" />
+        <Loader size="lg" label="Loading settings" />
       </div>
     );
   }
@@ -162,6 +167,9 @@ export function OrganizationSettings() {
       )}
       {activeTab === 'security' && (
         <SecurityTab org={org} orgId={currentOrgId!} currentUser={currentUser} />
+      )}
+      {activeTab === 'preferences' && (
+        <PreferencesTab />
       )}
       {activeTab === 'audit' && currentOrgId && (
         <AuditLogPanel orgId={currentOrgId} />
@@ -815,6 +823,71 @@ function SecurityTab({ org, orgId, currentUser }: {
         <button onClick={handleSaveSettings} className="btn-primary">
           Save Security Settings
         </button>
+      </div>
+    </div>
+  );
+}
+
+// Preferences Tab - Tutorial/Tooltip Settings
+function PreferencesTab() {
+  const { tutorialsEnabled, setTutorialsEnabled, resetTooltips, dismissedTooltips } = useTutorial();
+  const dismissedCount = dismissedTooltips.size;
+
+  return (
+    <div className="space-y-6">
+      <div className="card">
+        <div className="flex items-center gap-3 mb-4">
+          <Lightbulb className="w-5 h-5 text-amber-500" />
+          <h3 className="text-sm font-mono text-neutral-100 uppercase tracking-wider">Tutorial & Tooltips</h3>
+        </div>
+        <p className="text-sm text-neutral-500 mb-6">
+          Control in-app guidance and contextual help tooltips. Disable these if your team is already familiar with the platform.
+        </p>
+        
+        <div className="space-y-4">
+          <label className="flex items-center justify-between p-4 bg-neutral-800/50 border border-neutral-700 cursor-pointer hover:bg-neutral-800 transition-colors">
+            <div className="flex items-center gap-3">
+              <Lightbulb className="w-4 h-4 text-neutral-400" />
+              <div>
+                <span className="text-sm text-neutral-200">Enable tutorial tooltips</span>
+                <p className="text-xs text-neutral-500">Show helpful tips when hovering over features</p>
+              </div>
+            </div>
+            <div className="relative">
+              <input
+                type="checkbox"
+                checked={tutorialsEnabled}
+                onChange={(e) => setTutorialsEnabled(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-neutral-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-neutral-400 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600 peer-checked:after:bg-neutral-950"></div>
+            </div>
+          </label>
+
+          {dismissedCount > 0 && (
+            <div className="flex items-center justify-between p-4 bg-neutral-800/30 border border-neutral-800">
+              <div>
+                <span className="text-sm text-neutral-300">{dismissedCount} tooltip{dismissedCount !== 1 ? 's' : ''} dismissed</span>
+                <p className="text-xs text-neutral-500">Reset to see all tooltips again</p>
+              </div>
+              <button
+                onClick={resetTooltips}
+                className="flex items-center gap-2 px-3 py-1.5 text-xs font-mono text-neutral-400 hover:text-amber-500 border border-neutral-700 hover:border-amber-600 transition-colors"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                Reset All
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="card bg-neutral-900/50">
+        <h4 className="text-sm font-medium text-neutral-200 mb-2">For Advanced Teams</h4>
+        <p className="text-xs text-neutral-500">
+          If your team is experienced with Helios, you can disable tutorials to reduce UI clutter. 
+          Individual users can also dismiss specific tooltips as they learn.
+        </p>
       </div>
     </div>
   );

@@ -1,8 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { signOut } from 'firebase/auth';
-import { auth } from '@/lib/firebase/config';
+import { auth, db } from '@/lib/firebase/config';
+import { collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
+import { COLLECTIONS } from '@/lib/firebase/collections';
 
 // Force dynamic rendering to avoid Firebase initialization during static build
 export const dynamic = 'force-dynamic';
@@ -27,7 +29,9 @@ import {
   RefreshCw,
   Building2,
   Cpu,
-  Target
+  Target,
+  Bell,
+  X
 } from 'lucide-react';
 import { DataUploader } from '@/components/DataUploader';
 import { DashboardCharts } from '@/components/DashboardCharts';
@@ -40,9 +44,11 @@ import { IntegrationsPanel } from '@/components/IntegrationsPanel';
 import { OrganizationSettings } from '@/components/OrganizationSettings';
 import { GPUDashboard } from '@/components/GPUDashboard';
 import { CarbonTargets } from '@/components/CarbonTargets';
+import { AlertsNotifications } from '@/components/AlertsNotifications';
 import { AuthGuard, useCurrentUser } from '@/components/AuthGuard';
+import { TutorialTooltip } from '@/components/TutorialTooltip';
 
-type TabType = 'overview' | 'gpu' | 'targets' | 'upload' | 'integrations' | 'compare' | 'assumptions' | 'scenarios' | 'reports' | 'team' | 'settings';
+type TabType = 'overview' | 'gpu' | 'targets' | 'alerts' | 'integrations' | 'compare' | 'assumptions' | 'reports' | 'team' | 'settings';
 
 function DashboardContent() {
   const router = useRouter();
@@ -50,6 +56,54 @@ function DashboardContent() {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [hasData, setHasData] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showUploader, setShowUploader] = useState(false);
+  const [dataCheckComplete, setDataCheckComplete] = useState(false);
+  
+  // Get team ID from user data
+  const teamId = userData?.currentTeamId || userData?.teamIds?.[0] || null;
+
+  // Timeout fallback - if check takes too long, assume no data
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!dataCheckComplete) {
+        console.log('Data check timeout - showing upload prompt');
+        setDataCheckComplete(true);
+      }
+    }, 5000); // 5 second timeout
+    
+    return () => clearTimeout(timeout);
+  }, [dataCheckComplete]);
+
+  // Check if team has data on mount
+  useEffect(() => {
+    // If no teamId yet, mark check as complete after a brief delay
+    // (userData might still be loading)
+    if (!teamId) {
+      const timer = setTimeout(() => {
+        setDataCheckComplete(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+    
+    const checkForData = async () => {
+      try {
+        const workloadsQuery = query(
+          collection(db, COLLECTIONS.WORKLOADS),
+          where('teamId', '==', teamId),
+          limit(1)
+        );
+        const snap = await getDocs(workloadsQuery);
+        setHasData(!snap.empty);
+      } catch (error) {
+        console.error('Error checking for data:', error);
+        setHasData(false);
+      } finally {
+        setDataCheckComplete(true);
+      }
+    };
+    
+    checkForData();
+  }, [teamId]);
 
   const handleLogout = async () => {
     try {
@@ -64,8 +118,8 @@ function DashboardContent() {
     { id: 'overview', label: 'Overview', icon: <BarChart3 className="w-4 h-4" /> },
     { id: 'gpu', label: 'GPU Fleet', icon: <Cpu className="w-4 h-4" /> },
     { id: 'targets', label: 'Targets', icon: <Target className="w-4 h-4" /> },
+    { id: 'alerts', label: 'Alerts', icon: <Bell className="w-4 h-4" /> },
     { id: 'integrations', label: 'Integrations', icon: <Zap className="w-4 h-4" /> },
-    { id: 'upload', label: 'Upload', icon: <Upload className="w-4 h-4" /> },
     { id: 'compare', label: 'Compare', icon: <Activity className="w-4 h-4" /> },
     { id: 'assumptions', label: 'Assumptions', icon: <AlertCircle className="w-4 h-4" /> },
     { id: 'reports', label: 'Reports', icon: <FileText className="w-4 h-4" /> },
@@ -84,6 +138,15 @@ function DashboardContent() {
               <span className="text-sm font-mono font-medium tracking-wider">HELIOS</span>
             </Link>
             <div className="flex items-center gap-6">
+              {/* Upload Data Button - Plus icon only */}
+              <button
+                onClick={() => setShowUploader(true)}
+                className="p-2 bg-amber-600 hover:bg-amber-500 text-neutral-950 transition-colors"
+                title="Upload Data"
+              >
+                <Plus className="w-5 h-5" />
+              </button>
+              
               <Link href="/pricing" className="text-neutral-500 hover:text-neutral-200 text-xs font-mono uppercase tracking-wider transition-colors">
                 Pricing
               </Link>
@@ -147,19 +210,26 @@ function DashboardContent() {
 
         {/* Tab Content */}
         {activeTab === 'overview' && (
-          <OverviewTab hasData={hasData} onUploadClick={() => setActiveTab('upload')} />
-        )}
-        
-        {activeTab === 'upload' && (
-          <DataUploader onDataLoaded={() => setHasData(true)} />
+          <OverviewTab 
+            hasData={hasData} 
+            showUploader={showUploader}
+            onUploadClick={() => setShowUploader(true)} 
+            onDataLoaded={() => {
+              setHasData(true);
+              setShowUploader(false);
+            }}
+            teamId={teamId}
+            dataCheckComplete={dataCheckComplete}
+          />
         )}
         
         {activeTab === 'assumptions' && (
           <AssumptionPanel />
         )}
         
-        {activeTab === 'scenarios' && (
-          <ScenariosTab hasData={hasData} />
+
+        {activeTab === 'alerts' && (
+          <AlertsNotifications />
         )}
         
         {activeTab === 'reports' && (
@@ -189,13 +259,164 @@ function DashboardContent() {
         {activeTab === 'settings' && (
           <OrganizationSettings />
         )}
+
+        {/* Global Upload Modal */}
+        {showUploader && (
+          <div className="fixed inset-0 bg-neutral-950/90 backdrop-blur-sm z-50 flex items-start justify-center pt-20 overflow-y-auto">
+            <div className="bg-neutral-900 border border-neutral-800 w-full max-w-4xl mx-4 mb-8">
+              <div className="flex items-center justify-between p-4 border-b border-neutral-800">
+                <h2 className="text-lg font-mono text-neutral-100 uppercase tracking-wider">Upload Data</h2>
+                <button 
+                  onClick={() => setShowUploader(false)}
+                  className="text-neutral-500 hover:text-neutral-200 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="p-6">
+                <DataUploader 
+                  onDataLoaded={() => {
+                    setHasData(true);
+                    setShowUploader(false);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-function OverviewTab({ hasData, onUploadClick }: { hasData: boolean; onUploadClick: () => void }) {
-  if (!hasData) {
+interface DashboardMetrics {
+  totalCost: number;
+  totalEnergy: number;
+  totalCarbon: number;
+  avgConfidence: number;
+  workloadCount: number;
+  topWorkloads: Array<{ name: string; provider: string; region: string; cost: number; energy: number; carbon: number; utilization: number }>;
+}
+
+function OverviewTab({ hasData, showUploader, onUploadClick, onDataLoaded, teamId, dataCheckComplete }: { 
+  hasData: boolean; 
+  showUploader: boolean;
+  onUploadClick: () => void;
+  onDataLoaded: () => void;
+  teamId: string | null;
+  dataCheckComplete: boolean;
+}) {
+  const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchAttempted, setFetchAttempted] = useState(false);
+
+  // Fetch real metrics from Firestore
+  useEffect(() => {
+    if (!teamId) {
+      setFetchAttempted(true);
+      return;
+    }
+    if (!hasData) {
+      setFetchAttempted(true);
+      return;
+    }
+
+    const fetchMetrics = async () => {
+      setIsLoading(true);
+      try {
+        // Fetch workloads
+        const workloadsQuery = query(
+          collection(db, COLLECTIONS.WORKLOADS),
+          where('teamId', '==', teamId),
+          orderBy('createdAt', 'desc'),
+          limit(100)
+        );
+        const workloadsSnap = await getDocs(workloadsQuery);
+        
+        let totalCost = 0;
+        let totalEnergy = 0;
+        let totalCarbon = 0;
+        let totalConfidence = 0;
+        const workloads: DashboardMetrics['topWorkloads'] = [];
+
+        workloadsSnap.docs.forEach(doc => {
+          const d = doc.data();
+          const cost = d.cost || d.totalCost || 0;
+          const energy = d.totalEnergy || d.energyKwh || 0;
+          const carbon = d.totalCarbon || d.carbonKg || 0;
+          
+          totalCost += cost;
+          totalEnergy += energy;
+          totalCarbon += carbon;
+          totalConfidence += d.confidence || 70;
+
+          workloads.push({
+            name: d.name || 'Unknown',
+            provider: d.provider || 'Unknown',
+            region: d.region || 'unknown',
+            cost,
+            energy,
+            carbon,
+            utilization: d.avgCpuUtilization || 0,
+          });
+        });
+
+        const count = workloadsSnap.docs.length;
+        
+        // Also fetch from metrics collection for aggregated data
+        const metricsQuery = query(
+          collection(db, COLLECTIONS.METRICS),
+          where('teamId', '==', teamId),
+          orderBy('timestamp', 'desc'),
+          limit(10)
+        );
+        const metricsSnap = await getDocs(metricsQuery);
+        
+        metricsSnap.docs.forEach(doc => {
+          const d = doc.data();
+          if (d.cost) totalCost += d.cost;
+          if (d.energyKwh) totalEnergy += d.energyKwh;
+          if (d.carbonKg) totalCarbon += d.carbonKg;
+        });
+
+        setMetrics({
+          totalCost,
+          totalEnergy,
+          totalCarbon,
+          avgConfidence: count > 0 ? Math.round(totalConfidence / count) : 70,
+          workloadCount: count,
+          topWorkloads: workloads.sort((a, b) => b.cost - a.cost).slice(0, 10),
+        });
+      } catch (error) {
+        console.error('Error fetching metrics:', error);
+        // Set empty metrics on error so we don't infinite load
+        setMetrics({
+          totalCost: 0,
+          totalEnergy: 0,
+          totalCarbon: 0,
+          avgConfidence: 0,
+          workloadCount: 0,
+          topWorkloads: [],
+        });
+      } finally {
+        setIsLoading(false);
+        setFetchAttempted(true);
+      }
+    };
+
+    fetchMetrics();
+  }, [teamId, hasData]);
+
+  // Show loading only while initial data check is in progress
+  if (!dataCheckComplete) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <RefreshCw className="w-6 h-6 text-amber-500 animate-spin" />
+      </div>
+    );
+  }
+
+  if (!hasData && !showUploader) {
     return (
       <div className="text-center py-20">
         <div className="w-16 h-16 bg-neutral-900 border border-neutral-800 flex items-center justify-center mx-auto mb-6">
@@ -205,6 +426,46 @@ function OverviewTab({ hasData, onUploadClick }: { hasData: boolean; onUploadCli
         <p className="text-sm text-neutral-500 mb-8 max-w-md mx-auto">
           Upload your cloud billing data, data warehouse logs, or AI workload metadata to begin analysis.
         </p>
+        <TutorialTooltip
+          id="upload-data-cta"
+          title="Get Started"
+          content="Upload CSV files from AWS, GCP, Azure, Snowflake, or Databricks. Helios will auto-detect the format and map columns for you."
+          position="bottom"
+          showIcon={false}
+        >
+          <button onClick={onUploadClick} className="btn-primary inline-flex items-center gap-2">
+            <Upload className="w-4 h-4" />
+            Upload Data
+          </button>
+        </TutorialTooltip>
+      </div>
+    );
+  }
+
+  if (showUploader) {
+    return <DataUploader onDataLoaded={onDataLoaded} />;
+  }
+
+  // Show loading state only while actively loading, not indefinitely
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <RefreshCw className="w-6 h-6 text-amber-500 animate-spin" />
+      </div>
+    );
+  }
+
+  // If we tried to fetch but got no metrics, show empty state
+  if (fetchAttempted && !metrics) {
+    return (
+      <div className="text-center py-20">
+        <div className="w-16 h-16 bg-neutral-900 border border-neutral-800 flex items-center justify-center mx-auto mb-6">
+          <Upload className="w-8 h-8 text-neutral-600" />
+        </div>
+        <h2 className="text-lg font-display font-medium text-neutral-100 mb-2">No Data Found</h2>
+        <p className="text-sm text-neutral-500 mb-8 max-w-md mx-auto">
+          Upload your cloud billing data to see metrics and insights.
+        </p>
         <button onClick={onUploadClick} className="btn-primary inline-flex items-center gap-2">
           <Upload className="w-4 h-4" />
           Upload Data
@@ -213,74 +474,84 @@ function OverviewTab({ hasData, onUploadClick }: { hasData: boolean; onUploadCli
     );
   }
 
+  // Still waiting for initial fetch
+  if (!metrics) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <RefreshCw className="w-6 h-6 text-amber-500 animate-spin" />
+      </div>
+    );
+  }
+
+  // Calculate potential savings (estimate 15-20% of cost)
+  const potentialSavings = metrics.totalCost * 0.18;
+
   return (
     <div className="space-y-6">
-      {/* Summary Cards */}
+      {/* Summary Cards - Using REAL data */}
       <div className="grid md:grid-cols-4 gap-px bg-neutral-800">
         <SummaryCard
           title="Total Cost"
-          value="$127,453"
-          change="-12.3%"
-          changeType="positive"
+          value={`$${metrics.totalCost.toLocaleString(undefined, { maximumFractionDigits: 0 })}`}
+          subtitle={`${metrics.workloadCount} workloads`}
           icon={<DollarSign className="w-4 h-4 text-amber-500" />}
-          confidence={78}
+          confidence={metrics.avgConfidence}
         />
         <SummaryCard
           title="Energy Usage"
-          value="48,291 kWh"
-          change="-8.7%"
-          changeType="positive"
+          value={`${metrics.totalEnergy.toLocaleString(undefined, { maximumFractionDigits: 0 })} kWh`}
           icon={<Zap className="w-4 h-4 text-amber-500" />}
-          confidence={72}
+          confidence={metrics.avgConfidence}
         />
         <SummaryCard
           title="Carbon Emissions"
-          value="18.4 tCO₂e"
-          change="-15.2%"
-          changeType="positive"
+          value={`${(metrics.totalCarbon / 1000).toFixed(2)} tCO₂e`}
           icon={<Leaf className="w-4 h-4 text-emerald-500" />}
-          confidence={68}
+          confidence={metrics.avgConfidence}
         />
         <SummaryCard
           title="Potential Savings"
-          value="$23,100"
-          subtitle="18% reduction possible"
+          value={`$${potentialSavings.toLocaleString(undefined, { maximumFractionDigits: 0 })}`}
+          subtitle="~18% reduction possible"
           icon={<TrendingDown className="w-4 h-4 text-blue-500" />}
-          confidence={65}
+          confidence={Math.round(metrics.avgConfidence * 0.9)}
         />
       </div>
 
       {/* Historical Charts */}
       <HistoricalCharts />
 
-      {/* Charts */}
-      <DashboardCharts />
+      {/* Charts - pass real data */}
+      <DashboardCharts workloads={metrics.topWorkloads} />
 
-      {/* Hotspots */}
+      {/* Hotspots - generate from real data */}
       <div className="card">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-mono text-neutral-100 uppercase tracking-wider">Optimization Opportunities</h3>
-          <ConfidenceBadge score={72} />
+          <TutorialTooltip
+            id="confidence-score"
+            title="Confidence Score"
+            content="This score (0-100%) indicates data quality. Higher scores mean calculations use verified data; lower scores rely on estimates. Click to see what affects confidence."
+            position="left"
+          >
+            <ConfidenceBadge score={metrics.avgConfidence} />
+          </TutorialTooltip>
         </div>
         <div className="space-y-2">
-          <HotspotItem
-            title="Idle GPU instances in us-east-1"
-            severity="high"
-            savings="$8,200/month"
-            description="3 p3.8xlarge instances showing <5% utilization"
-          />
-          <HotspotItem
-            title="Snowflake warehouse oversizing"
-            severity="medium"
-            savings="$4,100/month"
-            description="ANALYTICS_WH running at 2X-Large with 12% avg utilization"
-          />
-          <HotspotItem
-            title="Training jobs in high-carbon region"
-            severity="low"
-            savings="2.1 tCO₂e/month"
-            description="Consider migrating from ap-southeast-2 to eu-north-1"
-          />
+          {metrics.topWorkloads.filter(w => w.utilization < 30 && w.utilization > 0).slice(0, 3).map((w, i) => (
+            <HotspotItem
+              key={i}
+              title={`Low utilization: ${w.name}`}
+              severity={w.utilization < 10 ? 'high' : w.utilization < 20 ? 'medium' : 'low'}
+              savings={`$${Math.round(w.cost * 0.5).toLocaleString()}/month`}
+              description={`${w.provider} ${w.region} - ${w.utilization}% avg CPU utilization`}
+            />
+          ))}
+          {metrics.topWorkloads.filter(w => w.utilization < 30 && w.utilization > 0).length === 0 && (
+            <p className="text-neutral-500 text-sm py-4 text-center">
+              No optimization opportunities detected yet. Upload more data for insights.
+            </p>
+          )}
         </div>
       </div>
     </div>
@@ -361,96 +632,6 @@ function HotspotItem({
         <p className="text-xs text-neutral-600">potential</p>
       </div>
       <ChevronRight className="w-4 h-4 text-neutral-600" />
-    </div>
-  );
-}
-
-function ScenariosTab({ hasData }: { hasData: boolean }) {
-  if (!hasData) {
-    return (
-      <div className="text-center py-20">
-        <div className="w-16 h-16 bg-neutral-900 border border-neutral-800 flex items-center justify-center mx-auto mb-6">
-          <Activity className="w-8 h-8 text-neutral-600" />
-        </div>
-        <p className="text-sm text-neutral-500">Upload data first to create scenarios.</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-sm font-mono text-neutral-100 uppercase tracking-wider">Scenario Simulator</h2>
-        <button className="btn-primary flex items-center gap-2">
-          <Plus className="w-4 h-4" />
-          New Scenario
-        </button>
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-px bg-neutral-800">
-        <ScenarioCard
-          name="Migrate to eu-north-1"
-          description="Move GPU training workloads to Sweden for lower carbon intensity"
-          costDelta="+$2,100"
-          energyDelta="0%"
-          carbonDelta="-67%"
-          confidence={71}
-        />
-        <ScenarioCard
-          name="Right-size Snowflake"
-          description="Reduce ANALYTICS_WH from 2X-Large to Medium"
-          costDelta="-$4,100"
-          energyDelta="-60%"
-          carbonDelta="-60%"
-          confidence={82}
-        />
-      </div>
-    </div>
-  );
-}
-
-function ScenarioCard({
-  name,
-  description,
-  costDelta,
-  energyDelta,
-  carbonDelta,
-  confidence,
-}: {
-  name: string;
-  description: string;
-  costDelta: string;
-  energyDelta: string;
-  carbonDelta: string;
-  confidence: number;
-}) {
-  return (
-    <div className="bg-neutral-950 p-6 cursor-pointer hover:bg-neutral-900 transition-colors">
-      <div className="flex items-start justify-between mb-2">
-        <h3 className="font-medium text-neutral-100 text-sm">{name}</h3>
-        <ConfidenceBadge score={confidence} size="sm" />
-      </div>
-      <p className="text-xs text-neutral-500 mb-4">{description}</p>
-      <div className="grid grid-cols-3 gap-3 p-3 bg-neutral-900 border border-neutral-800 text-xs">
-        <div className="text-center">
-          <p className="text-neutral-600 mb-0.5 font-mono uppercase text-[10px]">Cost</p>
-          <p className={`font-mono font-medium ${costDelta.startsWith('-') ? 'text-emerald-400' : 'text-red-400'}`}>
-            {costDelta}
-          </p>
-        </div>
-        <div className="text-center border-x border-neutral-800">
-          <p className="text-neutral-600 mb-0.5 font-mono uppercase text-[10px]">Energy</p>
-          <p className={`font-mono font-medium ${energyDelta.startsWith('-') ? 'text-emerald-400' : 'text-neutral-300'}`}>
-            {energyDelta}
-          </p>
-        </div>
-        <div className="text-center">
-          <p className="text-neutral-600 mb-0.5 font-mono uppercase text-[10px]">Carbon</p>
-          <p className={`font-mono font-medium ${carbonDelta.startsWith('-') ? 'text-emerald-400' : 'text-neutral-300'}`}>
-            {carbonDelta}
-          </p>
-        </div>
-      </div>
     </div>
   );
 }
@@ -595,6 +776,45 @@ function ReportsTab({ hasData }: { hasData: boolean }) {
     URL.revokeObjectURL(url);
   };
 
+  const downloadPDFReport = async () => {
+    if (!generatedReport) return;
+
+    try {
+      const { generatePDFReport, downloadPDF } = await import('@/lib/reports/pdf-generator');
+      
+      const pdfData = {
+        teamName: userData?.displayName || 'Team Report',
+        generatedAt: generatedReport.generatedAt,
+        dateRange: {
+          start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          end: new Date().toISOString().split('T')[0],
+        },
+        summary: {
+          totalWorkloads: generatedReport.summary.totalWorkloads,
+          totalEnergyKwh: generatedReport.summary.totalEnergy,
+          totalCarbonKg: generatedReport.summary.totalCarbon,
+          totalCostUsd: generatedReport.summary.totalCost || 0,
+          avgUtilization: 0,
+        },
+        workloads: generatedReport.workloads.map((w: any) => ({
+          name: w.name || 'Workload',
+          provider: w.provider || 'Unknown',
+          region: w.region || 'unknown',
+          instanceType: w.instanceType || 'unknown',
+          energyKwh: w.totalEnergy || 0,
+          carbonKg: w.totalCarbon || 0,
+          costUsd: w.cost || 0,
+          utilization: w.avgCpuUtilization || 0,
+        })),
+      };
+
+      const pdfBlob = await generatePDFReport(pdfData);
+      downloadPDF(pdfBlob, `helios-report-${new Date().toISOString().split('T')[0]}.pdf`);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  };
+
   if (!hasData) {
     return (
       <div className="text-center py-20">
@@ -643,6 +863,9 @@ function ReportsTab({ hasData }: { hasData: boolean }) {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <button onClick={downloadPDFReport} className="btn-primary text-xs">
+                Download PDF
+              </button>
               <button onClick={() => downloadReport('csv')} className="btn-outline text-xs">
                 Download CSV
               </button>

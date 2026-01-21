@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase/config';
-import { Loader2 } from 'lucide-react';
+import { Loader } from './Loader';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -71,8 +71,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
     return (
       <div className="min-h-screen bg-neutral-950 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-8 h-8 text-amber-500 animate-spin mx-auto mb-4" />
-          <p className="text-sm text-neutral-500 font-mono">Loading...</p>
+          <Loader size="lg" label="Loading" />
         </div>
       </div>
     );

@@ -1,0 +1,6 @@
+workload_id,name,provider,region,instance_type,vcpus,memory_gb,gpu_model,gpu_count,runtime_hours,cpu_utilization,memory_utilization,cost,start_time,end_time
+SC-O01,Training Job Optimized,gcp,us-west1,a2-highgpu-4g,48,340,A100,4,96.0,92,88,2880.00,2026-01-01T00:00:00Z,2026-01-05T00:00:00Z
+SC-O02,Inference Service Optimized,aws,us-west-2,inf1.6xlarge,24,48,,0,720.0,72,65,5040.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+SC-O03,Batch Processing Optimized,gcp,us-central1,c2-standard-30,30,120,,0,120.0,88,62,360.00,2026-01-08T00:00:00Z,2026-01-13T00:00:00Z
+SC-O04,Data Pipeline Optimized,aws,us-west-2,r6i.2xlarge,8,64,,0,280.0,75,85,560.00,2026-01-01T00:00:00Z,2026-01-12T16:00:00Z
+SC-O05,Dev Environment Optimized,gcp,us-central1,n1-standard-4,4,15,T4,1,320.0,55,58,480.00,2026-01-01T00:00:00Z,2026-01-14T08:00:00Z

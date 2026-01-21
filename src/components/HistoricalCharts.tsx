@@ -64,6 +64,12 @@ export function HistoricalCharts({ data, isLoading: externalLoading = false }: H
     }
 
     setIsLoading(true);
+    
+    // Timeout to prevent infinite loading
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+
     const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90;
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);
@@ -76,6 +82,7 @@ export function HistoricalCharts({ data, isLoading: externalLoading = false }: H
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
+      clearTimeout(timeout);
       // Group metrics by date
       const dailyData: Record<string, { cost: number; energy: number; carbon: number; count: number }> = {};
       
@@ -103,9 +110,16 @@ export function HistoricalCharts({ data, isLoading: externalLoading = false }: H
 
       setChartData(processedData);
       setIsLoading(false);
+    }, (error) => {
+      console.error('Error fetching metrics:', error);
+      clearTimeout(timeout);
+      setIsLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      clearTimeout(timeout);
+      unsubscribe();
+    };
   }, [timeRange, data, currentTeamId]);
 
   const metrics: { key: MetricType; label: string; unit: string; color: string }[] = [

@@ -1,0 +1,51 @@
+workload_id,name,provider,region,instance_type,vcpus,memory_gb,gpu_model,gpu_count,runtime_hours,cpu_utilization,memory_utilization,cost,start_time,end_time
+LS-001,Prod ML Pipeline A,aws,us-east-1,p3.8xlarge,32,244,V100,4,720.0,68,72,17280.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-002,Prod ML Pipeline B,aws,us-east-1,p3.8xlarge,32,244,V100,4,720.0,71,69,17280.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-003,Prod ML Pipeline C,aws,us-west-2,p3.8xlarge,32,244,V100,4,720.0,65,74,17280.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-004,Training Cluster Node 1,gcp,us-central1,a2-highgpu-8g,96,680,A100,8,480.0,92,88,24000.00,2026-01-01T00:00:00Z,2026-01-21T00:00:00Z
+LS-005,Training Cluster Node 2,gcp,us-central1,a2-highgpu-8g,96,680,A100,8,480.0,89,91,24000.00,2026-01-01T00:00:00Z,2026-01-21T00:00:00Z
+LS-006,Training Cluster Node 3,gcp,us-central1,a2-highgpu-8g,96,680,A100,8,360.0,94,87,18000.00,2026-01-06T00:00:00Z,2026-01-21T00:00:00Z
+LS-007,Inference API East,aws,us-east-1,inf1.24xlarge,96,192,,0,720.0,42,38,14400.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-008,Inference API West,aws,us-west-2,inf1.24xlarge,96,192,,0,720.0,38,35,14400.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-009,Inference API EU,aws,eu-west-1,inf1.24xlarge,96,192,,0,720.0,35,32,14400.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-010,Batch Processing 1,azure,eastus,Standard_E64s_v3,64,432,,0,168.0,78,82,1344.00,2026-01-08T00:00:00Z,2026-01-15T00:00:00Z
+LS-011,Batch Processing 2,azure,eastus,Standard_E64s_v3,64,432,,0,168.0,75,79,1344.00,2026-01-08T00:00:00Z,2026-01-15T00:00:00Z
+LS-012,Batch Processing 3,azure,westeurope,Standard_E64s_v3,64,432,,0,168.0,72,76,1344.00,2026-01-08T00:00:00Z,2026-01-15T00:00:00Z
+LS-013,Data Lake ETL,gcp,us-east4,n1-highmem-64,64,416,,0,336.0,55,68,2016.00,2026-01-01T00:00:00Z,2026-01-15T00:00:00Z
+LS-014,Feature Store Compute,aws,us-east-1,r5.12xlarge,48,384,,0,720.0,48,72,4320.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-015,Model Registry Service,gcp,us-central1,n1-standard-8,8,30,,0,720.0,25,35,432.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-016,Experiment Tracking,aws,us-east-1,m5.2xlarge,8,32,,0,720.0,32,45,576.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-017,GPU Dev Instance 1,aws,us-west-2,g4dn.xlarge,4,16,T4,1,480.0,45,52,1200.00,2026-01-01T00:00:00Z,2026-01-21T00:00:00Z
+LS-018,GPU Dev Instance 2,aws,us-west-2,g4dn.xlarge,4,16,T4,1,480.0,52,48,1200.00,2026-01-01T00:00:00Z,2026-01-21T00:00:00Z
+LS-019,GPU Dev Instance 3,aws,us-east-1,g4dn.xlarge,4,16,T4,1,320.0,38,42,800.00,2026-01-01T00:00:00Z,2026-01-14T08:00:00Z
+LS-020,Notebook Server 1,gcp,us-central1,n1-standard-4,4,15,T4,1,480.0,28,35,720.00,2026-01-01T00:00:00Z,2026-01-21T00:00:00Z
+LS-021,Notebook Server 2,gcp,us-central1,n1-standard-4,4,15,T4,1,480.0,32,38,720.00,2026-01-01T00:00:00Z,2026-01-21T00:00:00Z
+LS-022,CI/CD Runner GPU,azure,eastus,Standard_NC6s_v3,6,112,V100,1,240.0,62,55,3600.00,2026-01-01T00:00:00Z,2026-01-11T00:00:00Z
+LS-023,Model Serving A,aws,us-east-1,g5.xlarge,4,16,A10G,1,720.0,58,48,2160.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-024,Model Serving B,aws,us-west-2,g5.xlarge,4,16,A10G,1,720.0,55,45,2160.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-025,Model Serving C,aws,eu-west-1,g5.xlarge,4,16,A10G,1,720.0,52,42,2160.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-026,Vector DB Cluster 1,gcp,us-central1,n1-highmem-16,16,104,,0,720.0,42,78,2160.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-027,Vector DB Cluster 2,gcp,us-central1,n1-highmem-16,16,104,,0,720.0,45,82,2160.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-028,Vector DB Cluster 3,gcp,europe-west1,n1-highmem-16,16,104,,0,720.0,38,75,2160.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-029,Search Index Compute,azure,eastus,Standard_L8s_v2,8,64,,0,720.0,55,68,2880.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-030,Analytics Dashboard,aws,us-east-1,m5.xlarge,4,16,,0,720.0,22,28,288.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-031,Monitoring Stack,gcp,us-central1,e2-standard-4,4,16,,0,720.0,35,42,216.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-032,Log Processing,aws,us-east-1,c6i.4xlarge,16,32,,0,720.0,68,45,1152.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-033,Fine-tuning Job Alpha,aws,us-east-1,p4d.24xlarge,96,1152,A100,8,72.0,95,88,2880.00,2026-01-05T00:00:00Z,2026-01-08T00:00:00Z
+LS-034,Fine-tuning Job Beta,aws,us-east-1,p4d.24xlarge,96,1152,A100,8,96.0,92,85,3840.00,2026-01-10T00:00:00Z,2026-01-14T00:00:00Z
+LS-035,Fine-tuning Job Gamma,aws,us-west-2,p4d.24xlarge,96,1152,A100,8,48.0,88,82,1920.00,2026-01-18T00:00:00Z,2026-01-20T00:00:00Z
+LS-036,Evaluation Suite Daily,gcp,us-central1,a2-highgpu-1g,12,85,A100,1,4.0,85,72,80.00,2026-01-20T02:00:00Z,2026-01-20T06:00:00Z
+LS-037,A/B Test Inference,aws,us-east-1,g5.2xlarge,8,32,A10G,1,168.0,48,42,840.00,2026-01-13T00:00:00Z,2026-01-20T00:00:00Z
+LS-038,Shadow Deployment,aws,us-east-1,g5.2xlarge,8,32,A10G,1,168.0,45,38,840.00,2026-01-13T00:00:00Z,2026-01-20T00:00:00Z
+LS-039,Canary Release,aws,us-west-2,g5.xlarge,4,16,A10G,1,72.0,52,45,216.00,2026-01-17T00:00:00Z,2026-01-20T00:00:00Z
+LS-040,Load Test Cluster,azure,eastus,Standard_NC24s_v3,24,448,V100,4,8.0,98,92,240.00,2026-01-19T14:00:00Z,2026-01-19T22:00:00Z
+LS-041,Disaster Recovery Standby,aws,us-west-2,inf1.6xlarge,24,48,,0,720.0,5,8,5040.00,2026-01-01T00:00:00Z,2026-01-31T00:00:00Z
+LS-042,Staging Environment,gcp,us-central1,n1-standard-16,16,60,T4,1,480.0,35,42,1440.00,2026-01-01T00:00:00Z,2026-01-21T00:00:00Z
+LS-043,QA GPU Instance,azure,westus2,Standard_NC6s_v3,6,112,V100,1,320.0,42,48,4800.00,2026-01-01T00:00:00Z,2026-01-14T08:00:00Z
+LS-044,Research Experiment 1,aws,us-east-1,p3.2xlarge,8,61,V100,1,120.0,78,65,1080.00,2026-01-01T00:00:00Z,2026-01-06T00:00:00Z
+LS-045,Research Experiment 2,aws,us-east-1,p3.2xlarge,8,61,V100,1,96.0,82,72,864.00,2026-01-08T00:00:00Z,2026-01-12T00:00:00Z
+LS-046,Research Experiment 3,gcp,us-central1,n1-standard-8,8,30,P100,1,64.0,75,58,384.00,2026-01-14T00:00:00Z,2026-01-16T16:00:00Z
+LS-047,Compliance Audit Job,aws,us-east-1,m5.4xlarge,16,64,,0,2.0,92,45,8.00,2026-01-20T00:00:00Z,2026-01-20T02:00:00Z
+LS-048,Data Anonymization,azure,northeurope,Standard_E16s_v3,16,128,,0,24.0,88,72,192.00,2026-01-15T00:00:00Z,2026-01-16T00:00:00Z
+LS-049,Model Compression,gcp,us-east4,n1-highmem-8,8,52,T4,1,16.0,72,68,96.00,2026-01-18T08:00:00Z,2026-01-19T00:00:00Z
+LS-050,Quantization Pipeline,aws,us-west-2,g5.4xlarge,16,64,A10G,1,8.0,85,62,48.00,2026-01-19T14:00:00Z,2026-01-19T22:00:00Z

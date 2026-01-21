@@ -13,6 +13,12 @@ import type {
   Scenario
 } from '@/types';
 import { generateConfidenceStatement } from '../calculations/confidence';
+import { 
+  getEnergyAnalogies, 
+  getCarbonAnalogies, 
+  formatAnalogy,
+  getSustainabilityScore 
+} from '../utils/sustainability-analogies';
 
 export interface ReportInput {
   workloads: NormalizedWorkload[];
@@ -65,16 +71,45 @@ function generateOverviewSection(
 ): ReportSection {
   const org = organizationName || 'Your Organization';
   
+  // Get sustainability analogies
+  const energyAnalogies = getEnergyAnalogies(summary.totalEnergyKwh);
+  const carbonAnalogies = getCarbonAnalogies(summary.totalCarbonKgCo2e);
+  
+  // Calculate sustainability score
+  const carbonPerDollar = summary.totalCostUsd > 0 
+    ? summary.totalCarbonKgCo2e / summary.totalCostUsd 
+    : 0;
+  const avgGridIntensity = summary.totalEnergyKwh > 0
+    ? (summary.totalCarbonKgCo2e * 1000) / summary.totalEnergyKwh
+    : 436;
+  const sustainabilityScore = getSustainabilityScore({
+    carbonKgPerDollar: carbonPerDollar,
+    avgGridIntensity,
+  });
+
+  // Format analogies for display
+  const energyAnalogyText = energyAnalogies.length > 0 
+    ? `\n**What This Means:**\n${energyAnalogies.map(a => `- ${formatAnalogy(a)}`).join('\n')}`
+    : '';
+  const carbonAnalogyText = carbonAnalogies.length > 0
+    ? `\n${carbonAnalogies.map(a => `- ${formatAnalogy(a)}`).join('\n')}`
+    : '';
+  
   return {
     title: 'Executive Overview',
     content: `
 This report provides a comprehensive analysis of ${org}'s AI and data infrastructure 
 costs, energy consumption, and carbon emissions for the period ${dateRange.start} to ${dateRange.end}.
 
+**Sustainability Score: ${sustainabilityScore.score}/100 (${sustainabilityScore.grade})**
+${sustainabilityScore.description}
+
 **Key Metrics:**
 - Total Infrastructure Cost: $${summary.totalCostUsd.toLocaleString(undefined, { maximumFractionDigits: 0 })}
 - Total Energy Consumption: ${summary.totalEnergyKwh.toLocaleString(undefined, { maximumFractionDigits: 0 })} kWh
 - Total Carbon Emissions: ${(summary.totalCarbonKgCo2e / 1000).toFixed(2)} metric tons CO₂e
+- Carbon Efficiency: ${carbonPerDollar.toFixed(3)} kgCO₂e per dollar spent
+${energyAnalogyText}${carbonAnalogyText}
 
 **Data Quality:**
 - Average Confidence Score: ${summary.averageConfidence.toFixed(0)}%

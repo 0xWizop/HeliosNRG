@@ -16,6 +16,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { db, auth } from '@/lib/firebase/config';
 import { COLLECTIONS } from '@/lib/firebase/collections';
 import { getTeamAssumptions, calculateWorkloadMetrics } from '@/lib/assumptions';
+import { detectProvider, normalizeRegion } from '@/lib/detection/provider-detection';
 
 interface DataUploaderProps {
   onDataLoaded: () => void;
@@ -48,6 +49,18 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
   const [currentTeamId, setCurrentTeamId] = useState<string | null>(null);
   const [parsedRows, setParsedRows] = useState<any[]>([]);
 
+  // Reset uploader state for new uploads
+  const resetUploader = () => {
+    setStep('upload');
+    setUploadedFile(null);
+    setDetectedType(null);
+    setColumnMappings([]);
+    setValidationMessages([]);
+    setConfidenceScore(0);
+    setParsedRows([]);
+    setIsProcessing(false);
+  };
+
   // Get current user's team
   useEffect(() => {
     if (!auth) return;
@@ -75,13 +88,18 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
   }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('File select triggered');
     const files = e.target.files;
     if (files && files.length > 0) {
+      console.log('File found:', files[0].name);
       processFile(files[0]);
+    } else {
+      console.log('No files selected');
     }
   };
 
   const processFile = async (file: File) => {
+    console.log('Processing file:', file.name, file.size);
     setIsProcessing(true);
     
     try {
@@ -186,6 +204,7 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
       console.error('Error parsing file:', error);
     }
     
+    console.log('File processing complete, advancing to mapping step');
     setIsProcessing(false);
     setStep('mapping');
   };
@@ -243,10 +262,23 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
           mappedData[mapping.targetColumn] = row[mapping.sourceColumn];
         });
         
-        // Calculate energy and carbon using team's assumptions
-        const metrics = calculateWorkloadMetrics(assumptions, {
+        // Use intelligent provider detection to reduce "Unknown" attribution
+        const detection = detectProvider({
           provider: mappedData.provider,
           region: mappedData.region,
+          instanceType: mappedData.instance_type,
+          gpuModel: mappedData.gpu_model,
+        });
+        
+        // Normalize region based on detected provider
+        const normalizedRegion = detection.region !== 'unknown' 
+          ? normalizeRegion(detection.region, detection.provider)
+          : mappedData.region || 'unknown';
+        
+        // Calculate energy and carbon using team's assumptions
+        const metrics = calculateWorkloadMetrics(assumptions, {
+          provider: detection.provider !== 'unknown' ? detection.provider : mappedData.provider,
+          region: normalizedRegion,
           instanceType: mappedData.instance_type,
           vcpus: parseFloat(mappedData.vcpus) || 4,
           runtimeHours: parseFloat(mappedData.runtime_hours) || 1,
@@ -256,12 +288,15 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
         totalEnergySum += metrics.energyKwh;
         totalCarbonSum += metrics.carbonKg;
         
+        // Boost confidence if provider was auto-detected
+        const confidenceBoost = detection.method !== 'fallback' && detection.confidence > 0 ? 5 : 0;
+        
         return addDoc(collection(db, COLLECTIONS.WORKLOADS), {
           teamId: currentTeamId,
           datasetId: datasetRef.id,
           name: mappedData.name || mappedData.workload_id || 'Unnamed Workload',
-          provider: mappedData.provider || 'Unknown',
-          region: mappedData.region || 'unknown',
+          provider: detection.provider !== 'unknown' ? detection.provider : (mappedData.provider || 'Unknown'),
+          region: normalizedRegion,
           instanceType: mappedData.instance_type || 'unknown',
           vcpus: parseFloat(mappedData.vcpus) || 0,
           memoryGb: parseFloat(mappedData.memory_gb) || 0,
@@ -270,7 +305,9 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
           avgMemoryUtilization: parseFloat(mappedData.memory_utilization) || 0,
           totalEnergy: metrics.energyKwh,
           totalCarbon: metrics.carbonKg,
-          confidence: metrics.confidenceScore,
+          confidence: Math.min(100, metrics.confidenceScore + confidenceBoost),
+          detectionMethod: detection.method,
+          detectionConfidence: detection.confidence,
           startTime: mappedData.start_time ? Timestamp.fromDate(new Date(mappedData.start_time)) : null,
           endTime: mappedData.end_time ? Timestamp.fromDate(new Date(mappedData.end_time)) : null,
           createdAt: Timestamp.now(),
@@ -348,9 +385,9 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
               accept=".csv,.json"
               onChange={handleFileSelect}
               className="hidden"
-              id="file-upload"
+              id="data-uploader-file-input"
             />
-            <label htmlFor="file-upload" className="cursor-pointer">
+            <label htmlFor="data-uploader-file-input" className="cursor-pointer block">
               {isProcessing ? (
                 <RefreshCw className="w-12 h-12 text-amber-500 mx-auto mb-4 animate-spin" />
               ) : (
@@ -493,15 +530,15 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
                 <div className="mt-4 space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-neutral-500">Rows processed</span>
-                    <span className="font-mono text-neutral-200">12,847</span>
+                    <span className="font-mono text-neutral-200">{parsedRows.length.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-neutral-500">Columns mapped</span>
-                    <span className="font-mono text-neutral-200">6 of 8</span>
+                    <span className="font-mono text-neutral-200">{columnMappings.length} of {uploadedFile?.columns.length || 0}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-neutral-500">Data completeness</span>
-                    <span className="font-mono text-neutral-200">99.8%</span>
+                    <span className="font-mono text-neutral-200">{((columnMappings.length / (uploadedFile?.columns.length || 1)) * 100).toFixed(1)}%</span>
                   </div>
                 </div>
               </div>
@@ -538,7 +575,7 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
             View the dashboard to explore your infrastructure metrics.
           </p>
           <div className="inline-flex gap-3">
-            <button onClick={() => setStep('upload')} className="btn-outline">
+            <button onClick={resetUploader} className="btn-outline">
               Upload More Data
             </button>
             <button className="btn-primary">

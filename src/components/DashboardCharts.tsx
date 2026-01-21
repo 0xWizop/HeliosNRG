@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   BarChart,
   Bar,
@@ -20,43 +20,79 @@ import {
 } from 'recharts';
 import { ConfidenceBadge } from './ConfidenceBadge';
 
-// Sample data for charts
-const timeSeriesData = [
-  { date: 'Jan 1', cost: 4200, energy: 1580, carbon: 610 },
-  { date: 'Jan 8', cost: 3800, energy: 1420, carbon: 548 },
-  { date: 'Jan 15', cost: 4500, energy: 1680, carbon: 648 },
-  { date: 'Jan 22', cost: 3600, energy: 1350, carbon: 521 },
-  { date: 'Jan 29', cost: 4100, energy: 1530, carbon: 590 },
-];
+interface WorkloadData {
+  name: string;
+  provider: string;
+  region: string;
+  cost: number;
+  energy: number;
+  carbon: number;
+  utilization: number;
+}
 
-const workloadTypeData = [
-  { name: 'Training', cost: 52000, energy: 19500, carbon: 7500 },
-  { name: 'Inference', cost: 38000, energy: 14200, carbon: 5480 },
-  { name: 'Batch', cost: 22000, energy: 8200, carbon: 3160 },
-  { name: 'Interactive', cost: 15000, energy: 5600, carbon: 2160 },
-];
+interface DashboardChartsProps {
+  workloads?: WorkloadData[];
+}
 
-const regionData = [
-  { name: 'us-east-1', cost: 45000, energy: 16800, carbon: 5664, intensity: 337 },
-  { name: 'us-west-2', cost: 32000, energy: 12000, carbon: 1404, intensity: 117 },
-  { name: 'eu-west-1', cost: 28000, energy: 10500, carbon: 3108, intensity: 296 },
-  { name: 'eu-north-1', cost: 22000, energy: 8200, carbon: 230, intensity: 28 },
-];
+const COLORS = ['#f59e0b', '#22c55e', '#3b82f6', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'];
 
-const costEnergyScatter = [
-  { workload: 'LLM Training', cost: 12500, energy: 4680, type: 'training' },
-  { workload: 'Image Gen', cost: 8200, energy: 3070, type: 'training' },
-  { workload: 'Embedding API', cost: 4500, energy: 1680, type: 'inference' },
-  { workload: 'Chat API', cost: 6800, energy: 2550, type: 'inference' },
-  { workload: 'Batch ETL', cost: 3200, energy: 1200, type: 'batch' },
-  { workload: 'Analytics WH', cost: 5600, energy: 2100, type: 'warehouse' },
-  { workload: 'Dev Notebooks', cost: 2100, energy: 790, type: 'interactive' },
-];
-
-const COLORS = ['#f59e0b', '#22c55e', '#3b82f6', '#8b5cf6', '#ec4899'];
-
-export function DashboardCharts() {
+export function DashboardCharts({ workloads = [] }: DashboardChartsProps) {
   const [selectedMetric, setSelectedMetric] = useState<'cost' | 'energy' | 'carbon'>('cost');
+
+  // Generate chart data from real workloads
+  const { providerData, regionData, topWorkloadsData } = useMemo(() => {
+    // Group by provider
+    const byProvider: Record<string, { cost: number; energy: number; carbon: number }> = {};
+    // Group by region
+    const byRegion: Record<string, { cost: number; energy: number; carbon: number }> = {};
+    
+    workloads.forEach(w => {
+      // Provider aggregation
+      if (!byProvider[w.provider]) {
+        byProvider[w.provider] = { cost: 0, energy: 0, carbon: 0 };
+      }
+      byProvider[w.provider].cost += w.cost;
+      byProvider[w.provider].energy += w.energy;
+      byProvider[w.provider].carbon += w.carbon;
+
+      // Region aggregation
+      if (!byRegion[w.region]) {
+        byRegion[w.region] = { cost: 0, energy: 0, carbon: 0 };
+      }
+      byRegion[w.region].cost += w.cost;
+      byRegion[w.region].energy += w.energy;
+      byRegion[w.region].carbon += w.carbon;
+    });
+
+    const providerData = Object.entries(byProvider)
+      .map(([name, data]) => ({ name, ...data }))
+      .sort((a, b) => b.cost - a.cost);
+
+    const regionData = Object.entries(byRegion)
+      .map(([name, data]) => ({ name, ...data }))
+      .sort((a, b) => b.cost - a.cost)
+      .slice(0, 6);
+
+    const topWorkloadsData = workloads
+      .slice(0, 10)
+      .map(w => ({
+        workload: w.name.length > 20 ? w.name.substring(0, 17) + '...' : w.name,
+        cost: w.cost,
+        energy: w.energy,
+        provider: w.provider,
+      }));
+
+    return { providerData, regionData, topWorkloadsData };
+  }, [workloads]);
+
+  // Show empty state if no data
+  if (workloads.length === 0) {
+    return (
+      <div className="card text-center py-12">
+        <p className="text-neutral-500 text-sm">No workload data available for charts. Upload data to see visualizations.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -82,9 +118,9 @@ export function DashboardCharts() {
         </div>
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={timeSeriesData}>
+            <BarChart data={topWorkloadsData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis dataKey="date" tick={{ fontSize: 12 }} stroke="#64748b" />
+              <XAxis dataKey="workload" tick={{ fontSize: 10 }} stroke="#64748b" angle={-45} textAnchor="end" height={80} />
               <YAxis tick={{ fontSize: 12 }} stroke="#64748b" />
               <Tooltip 
                 contentStyle={{ 
@@ -93,30 +129,29 @@ export function DashboardCharts() {
                   borderRadius: '8px',
                   boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
                 }}
+                formatter={(value: number) => [`$${value.toLocaleString()}`, 'Cost']}
               />
-              <Line 
-                type="monotone" 
+              <Bar 
                 dataKey={selectedMetric} 
-                stroke={selectedMetric === 'cost' ? '#f59e0b' : selectedMetric === 'energy' ? '#22c55e' : '#10b981'}
-                strokeWidth={2}
-                dot={{ fill: 'white', strokeWidth: 2 }}
+                fill={selectedMetric === 'cost' ? '#f59e0b' : selectedMetric === 'energy' ? '#22c55e' : '#10b981'}
+                radius={[4, 4, 0, 0]}
               />
-            </LineChart>
+            </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       {/* Two Column Charts */}
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Workload Type Breakdown */}
+        {/* By Provider */}
         <div className="card">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="card-header mb-0">By Workload Type</h3>
+            <h3 className="card-header mb-0">By Provider</h3>
             <ConfidenceBadge score={72} size="sm" />
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={workloadTypeData} layout="vertical">
+              <BarChart data={providerData} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis type="number" tick={{ fontSize: 12 }} stroke="#64748b" />
                 <YAxis dataKey="name" type="category" tick={{ fontSize: 12 }} stroke="#64748b" width={80} />
@@ -215,24 +250,23 @@ export function DashboardCharts() {
                   name === 'cost' ? 'Cost' : 'Energy'
                 ]}
                 labelFormatter={(label) => {
-                  const item = costEnergyScatter.find(d => d.cost === label);
+                  const item = topWorkloadsData.find((d: { cost: number; workload: string }) => d.cost === label);
                   return item?.workload || '';
                 }}
               />
               <Legend />
               <Scatter 
                 name="Workloads" 
-                data={costEnergyScatter} 
+                data={topWorkloadsData} 
                 fill="#f59e0b"
               >
-                {costEnergyScatter.map((entry, index) => (
+                {topWorkloadsData.map((entry: { provider: string }, index: number) => (
                   <Cell 
                     key={`cell-${index}`} 
                     fill={
-                      entry.type === 'training' ? '#f59e0b' :
-                      entry.type === 'inference' ? '#22c55e' :
-                      entry.type === 'batch' ? '#3b82f6' :
-                      entry.type === 'warehouse' ? '#8b5cf6' : '#ec4899'
+                      entry.provider === 'aws' ? '#f59e0b' :
+                      entry.provider === 'gcp' ? '#22c55e' :
+                      entry.provider === 'azure' ? '#3b82f6' : '#8b5cf6'
                     }
                   />
                 ))}
@@ -243,19 +277,19 @@ export function DashboardCharts() {
         <div className="flex items-center justify-center gap-6 mt-4 text-sm">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-amber-500" />
-            <span className="text-slate-600">Training</span>
+            <span className="text-slate-600">AWS</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-green-500" />
-            <span className="text-slate-600">Inference</span>
+            <span className="text-slate-600">GCP</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-blue-500" />
-            <span className="text-slate-600">Batch</span>
+            <span className="text-slate-600">Azure</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-purple-500" />
-            <span className="text-slate-600">Warehouse</span>
+            <span className="text-slate-600">Other</span>
           </div>
         </div>
       </div>
@@ -290,7 +324,6 @@ export function DashboardCharts() {
               />
               <Legend />
               <Bar dataKey="carbon" name="Carbon (kgCO₂e)" fill="#10b981" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="intensity" name="Grid Intensity (gCO₂/kWh)" fill="#6366f1" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

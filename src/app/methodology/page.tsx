@@ -72,7 +72,8 @@ export default function MethodologyPage() {
           </Link>
           <Link href="/dashboard" className="text-neutral-400 hover:text-neutral-100 flex items-center gap-2 text-xs font-mono uppercase tracking-wider transition-colors">
             <ArrowLeft className="w-3 h-3" />
-            Back to Dashboard
+            <span className="hidden sm:inline">Back to Dashboard</span>
+            <span className="sm:hidden">Back</span>
           </Link>
         </div>
       </header>
@@ -120,7 +121,20 @@ export default function MethodologyPage() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 min-w-0 px-8 py-12 lg:px-12">
+        <main className="flex-1 min-w-0 px-4 sm:px-8 py-8 sm:py-12 lg:px-12">
+          {/* Mobile Navigation */}
+          <div className="lg:hidden mb-8">
+            <select 
+              value={activeSection}
+              onChange={(e) => scrollToSection(e.target.value)}
+              className="w-full bg-neutral-900 border border-neutral-700 text-neutral-200 px-4 py-3 text-sm font-mono"
+            >
+              {sections.map(({ id, label }) => (
+                <option key={id} value={id}>{label}</option>
+              ))}
+            </select>
+          </div>
+
           {/* Overview Section */}
           <section id="overview" className="mb-16 scroll-mt-20">
             <div className="flex items-center gap-2 text-amber-500 mb-3">
@@ -136,7 +150,7 @@ export default function MethodologyPage() {
             </p>
 
             {/* Key Stats Visual */}
-            <div className="grid grid-cols-3 gap-4 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
               <div className="bg-neutral-900 border border-neutral-800 p-5">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-8 h-8 bg-amber-500/10 flex items-center justify-center">
@@ -172,7 +186,7 @@ export default function MethodologyPage() {
                 <Shield className="w-4 h-4 text-amber-500" />
                 Core Principles
               </h3>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
                   <div>
@@ -314,7 +328,7 @@ export default function MethodologyPage() {
 
               <div>
                 <h3 className="text-sm font-medium text-neutral-200 mb-3">PUE by Provider</h3>
-                <div className="grid grid-cols-4 gap-px bg-neutral-800">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-neutral-800">
                   <div className="bg-neutral-900 p-4 text-center">
                     <p className="text-lg font-mono text-neutral-100">1.135</p>
                     <p className="text-xs text-neutral-500 mt-1">AWS</p>
@@ -445,7 +459,7 @@ export default function MethodologyPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <h3 className="text-sm font-medium text-neutral-200 mb-3">Increases Confidence</h3>
                 <ul className="space-y-2 text-sm">
@@ -495,7 +509,7 @@ export default function MethodologyPage() {
           <section id="data-sources" className="mb-16 scroll-mt-20">
             <h2 className="text-xl font-mono text-neutral-100 tracking-tight mb-6">Data Sources</h2>
             
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="p-4 border border-neutral-800">
                 <p className="text-sm text-neutral-200 font-medium mb-2">Grid Carbon Intensity</p>
                 <ul className="text-xs text-neutral-500 space-y-1">
