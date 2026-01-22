@@ -217,7 +217,8 @@ export function IntegrationsPanel() {
           className="btn-primary flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
-          Add Integration
+          <span className="hidden sm:inline">Add Integration</span>
+          <span className="sm:hidden">Add</span>
         </button>
       </div>
 
@@ -277,25 +278,24 @@ export function IntegrationsPanel() {
           return (
             <div
               key={integration.id}
-              className="card flex items-center justify-between"
+              className="card flex flex-col sm:flex-row sm:items-center justify-between gap-3"
             >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-neutral-800 border border-neutral-700 flex items-center justify-center p-2">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-neutral-800 border border-neutral-700 flex items-center justify-center p-2 shrink-0">
                   <img src={config.logo} alt={config.name} className="w-full h-full object-contain" />
                 </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-medium text-neutral-200">{integration.name}</h3>
-                    <span className={`badge ${config.color}`}>{config.name}</span>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-sm font-medium text-neutral-200 truncate">{integration.name}</h3>
+                    <span className={`badge ${config.color} text-[10px]`}>{config.name}</span>
                   </div>
-                  <div className="flex items-center gap-4 mt-1 text-xs text-neutral-500">
+                  <div className="flex items-center gap-2 sm:gap-4 mt-1 text-[10px] sm:text-xs text-neutral-500 flex-wrap">
                     <span className="flex items-center gap-1">
                       <StatusIcon className={`w-3 h-3 ${status.color} ${integration.status === 'syncing' ? 'animate-spin' : ''}`} />
                       {status.label}
                     </span>
-                    <span>Last sync: {integration.lastSync}</span>
-                    <span>Next: {integration.nextSync}</span>
-                    <span>Interval: {integration.pollInterval}min</span>
+                    <span className="hidden sm:inline">Last: {integration.lastSync}</span>
+                    <span className="hidden sm:inline">Next: {integration.nextSync}</span>
                   </div>
                 </div>
               </div>

@@ -231,7 +231,8 @@ export function CarbonTargets() {
           className="btn-primary flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
-          Add Target
+          <span className="hidden sm:inline">Add Target</span>
+          <span className="sm:hidden">Add</span>
         </button>
       </div>
 

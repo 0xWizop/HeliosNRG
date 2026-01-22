@@ -131,26 +131,26 @@ function DashboardContent() {
     <div className="min-h-screen bg-neutral-950 text-neutral-100">
       {/* Header */}
       <header className="border-b border-neutral-800 sticky top-0 z-10 bg-neutral-950/90 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-14">
             <Link href="/" className="flex items-center gap-3">
               <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
               <span className="text-sm font-mono font-medium tracking-wider">HELIOS</span>
             </Link>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3 sm:gap-6">
               {/* Upload Data Button - Plus icon only */}
               <button
                 onClick={() => setShowUploader(true)}
-                className="p-2 bg-amber-600 hover:bg-amber-500 text-neutral-950 transition-colors"
+                className="w-7 h-7 bg-amber-600 hover:bg-amber-500 text-neutral-950 transition-colors flex items-center justify-center"
                 title="Upload Data"
               >
-                <Plus className="w-5 h-5" />
+                <Plus className="w-4 h-4" />
               </button>
               
-              <Link href="/pricing" className="text-neutral-500 hover:text-neutral-200 text-xs font-mono uppercase tracking-wider transition-colors">
+              <Link href="/pricing" className="hidden sm:block text-neutral-500 hover:text-neutral-200 text-xs font-mono uppercase tracking-wider transition-colors">
                 Pricing
               </Link>
-              <Link href="/methodology" className="text-neutral-500 hover:text-neutral-200 text-xs font-mono uppercase tracking-wider transition-colors">
+              <Link href="/methodology" className="hidden sm:block text-neutral-500 hover:text-neutral-200 text-xs font-mono uppercase tracking-wider transition-colors">
                 Docs
               </Link>
               
@@ -189,14 +189,14 @@ function DashboardContent() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Tab Navigation */}
-        <div className="flex items-center gap-px bg-neutral-800 mb-8 overflow-x-auto">
+        <div className="flex items-center gap-px bg-neutral-800 mb-6 sm:mb-8 overflow-x-auto scrollbar-hide">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-5 py-3 text-xs font-mono uppercase tracking-wider transition-all whitespace-nowrap ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2.5 sm:py-3 text-[10px] sm:text-xs font-mono uppercase tracking-wider transition-all whitespace-nowrap ${
                 activeTab === tab.id
                   ? 'bg-amber-600 text-neutral-950'
                   : 'bg-neutral-900 text-neutral-500 hover:text-neutral-200 hover:bg-neutral-800'
@@ -262,10 +262,10 @@ function DashboardContent() {
 
         {/* Global Upload Modal */}
         {showUploader && (
-          <div className="fixed inset-0 bg-neutral-950/90 backdrop-blur-sm z-50 flex items-start justify-center pt-20 overflow-y-auto">
-            <div className="bg-neutral-900 border border-neutral-800 w-full max-w-4xl mx-4 mb-8">
-              <div className="flex items-center justify-between p-4 border-b border-neutral-800">
-                <h2 className="text-lg font-mono text-neutral-100 uppercase tracking-wider">Upload Data</h2>
+          <div className="fixed inset-0 bg-neutral-950/95 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 overflow-hidden">
+            <div className="bg-neutral-900 border border-neutral-800 w-full max-w-lg sm:max-w-4xl max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between p-3 sm:p-4 border-b border-neutral-800">
+                <h2 className="text-sm sm:text-lg font-mono text-neutral-100 uppercase tracking-wider">Upload Data</h2>
                 <button 
                   onClick={() => setShowUploader(false)}
                   className="text-neutral-500 hover:text-neutral-200 transition-colors"
@@ -273,7 +273,7 @@ function DashboardContent() {
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              <div className="p-6">
+              <div className="p-3 sm:p-6 overflow-y-auto">
                 <DataUploader 
                   onDataLoaded={() => {
                     setHasData(true);

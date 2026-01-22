@@ -92,10 +92,10 @@ export default function SetupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950">
+    <div className="fixed inset-0 bg-neutral-950 overflow-hidden flex flex-col">
       {/* Header */}
       <header className="border-b border-neutral-800">
-        <div className="max-w-4xl mx-auto px-6 h-14 flex items-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center">
           <Link href="/" className="flex items-center gap-3">
             <div className="w-2 h-2 bg-amber-500 rounded-full" />
             <span className="text-sm font-mono font-medium tracking-wider text-neutral-100">HELIOS</span>
@@ -103,32 +103,34 @@ export default function SetupPage() {
         </div>
       </header>
 
-      <main className="max-w-xl mx-auto px-6 py-16">
+      <main className="flex-1 flex flex-col px-4 sm:px-6 py-6">
+      <div className="w-full max-w-md mx-auto flex flex-col flex-1">
         {step === 'team' && (
-          <>
+          <div className="flex flex-col flex-1">
             {/* Progress indicator */}
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-8 bg-amber-500 flex items-center justify-center">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-7 h-7 bg-amber-500 flex items-center justify-center">
                 <span className="text-xs font-mono text-neutral-950">1</span>
               </div>
               <div className="h-px flex-1 bg-neutral-800" />
-              <div className="w-8 h-8 bg-neutral-800 flex items-center justify-center">
+              <div className="w-7 h-7 bg-neutral-800 flex items-center justify-center">
                 <span className="text-xs font-mono text-neutral-500">2</span>
               </div>
             </div>
 
-            <div className="mb-8">
-              <h1 className="text-2xl font-mono text-neutral-100 tracking-tight mb-2">
+            <div className="mb-4">
+              <h1 className="text-xl font-mono text-neutral-100 tracking-tight mb-2">
                 Create your team
               </h1>
-              <p className="text-neutral-500">
-                Set up your workspace to start tracking cloud infrastructure metrics.
+              <p className="text-sm text-neutral-500">
+                Set up your workspace to start tracking.
               </p>
             </div>
 
-            <form onSubmit={handleCreateTeam} className="space-y-6">
+            <form onSubmit={handleCreateTeam} className="flex flex-col flex-1">
+              <div className="space-y-3">
               <div>
-                <label className="block text-xs font-mono text-neutral-500 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-mono text-neutral-500 uppercase tracking-wider mb-1">
                   Team Name *
                 </label>
                 <div className="relative">
@@ -145,7 +147,7 @@ export default function SetupPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-neutral-500 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-mono text-neutral-500 uppercase tracking-wider mb-1">
                   Company Name (Optional)
                 </label>
                 <div className="relative">
@@ -161,7 +163,7 @@ export default function SetupPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-neutral-500 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-mono text-neutral-500 uppercase tracking-wider mb-1">
                   Team Size
                 </label>
                 <div className="grid grid-cols-4 gap-2">
@@ -170,7 +172,7 @@ export default function SetupPage() {
                       key={size}
                       type="button"
                       onClick={() => setTeamSize(size)}
-                      className={`py-3 px-4 text-sm font-mono transition-colors ${
+                      className={`py-2.5 px-3 text-xs font-mono transition-colors ${
                         teamSize === size
                           ? 'bg-amber-500 text-neutral-950'
                           : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:border-neutral-700'
@@ -182,25 +184,29 @@ export default function SetupPage() {
                 </div>
               </div>
 
+              </div>
+
               {/* What you'll get */}
-              <div className="pt-6 border-t border-neutral-800">
-                <p className="text-xs font-mono text-neutral-500 uppercase tracking-wider mb-4">What's included</p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <CheckCircle className="w-4 h-4 text-amber-500" />
-                    <span className="text-sm text-neutral-400">Unlimited workload tracking</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle className="w-4 h-4 text-amber-500" />
-                    <span className="text-sm text-neutral-400">Cloud provider integrations</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle className="w-4 h-4 text-amber-500" />
-                    <span className="text-sm text-neutral-400">Team collaboration features</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle className="w-4 h-4 text-amber-500" />
-                    <span className="text-sm text-neutral-400">Carbon & cost reporting</span>
+              <div className="flex-1 flex items-center justify-center border-t border-neutral-800 mt-3">
+                <div className="w-full">
+                  <p className="text-xs font-mono text-neutral-500 uppercase tracking-wider mb-2">What's included</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3 h-3 text-amber-500 shrink-0" />
+                      <span className="text-xs text-neutral-400">Workload tracking</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3 h-3 text-amber-500 shrink-0" />
+                      <span className="text-xs text-neutral-400">Cloud integrations</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3 h-3 text-amber-500 shrink-0" />
+                      <span className="text-xs text-neutral-400">Team collaboration</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-3 h-3 text-amber-500 shrink-0" />
+                      <span className="text-xs text-neutral-400">Carbon reporting</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -208,7 +214,7 @@ export default function SetupPage() {
               <button
                 type="submit"
                 disabled={isLoading || !teamName}
-                className="w-full btn-primary flex items-center justify-center gap-2 py-3"
+                className="w-full btn-primary flex items-center justify-center gap-2 py-3 mt-auto mb-4"
               >
                 {isLoading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -220,11 +226,11 @@ export default function SetupPage() {
                 )}
               </button>
             </form>
-          </>
+          </div>
         )}
 
         {step === 'complete' && (
-          <div className="text-center py-12">
+          <div className="flex-1 flex flex-col items-center justify-center text-center">
             <div className="w-16 h-16 bg-amber-500/10 border border-amber-500/30 mx-auto mb-6 flex items-center justify-center">
               <CheckCircle className="w-8 h-8 text-amber-500" />
             </div>
@@ -240,6 +246,7 @@ export default function SetupPage() {
             </div>
           </div>
         )}
+      </div>
       </main>
     </div>
   );

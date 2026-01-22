@@ -172,14 +172,14 @@ export default function PricingPage() {
     <div className="min-h-screen bg-neutral-950 text-neutral-100">
       {/* Header */}
       <header className="border-b border-neutral-800">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-14">
             <Link href="/" className="flex items-center gap-3">
               <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
               <span className="text-sm font-mono font-medium tracking-wider">HELIOS</span>
             </Link>
-            <div className="flex items-center gap-6">
-              <Link href="/methodology" className="text-neutral-500 hover:text-neutral-200 text-xs font-mono uppercase tracking-wider transition-colors">
+            <div className="flex items-center gap-4 sm:gap-6">
+              <Link href="/methodology" className="hidden sm:block text-neutral-500 hover:text-neutral-200 text-xs font-mono uppercase tracking-wider transition-colors">
                 Docs
               </Link>
               <Link href="/login" className="text-neutral-500 hover:text-neutral-200 text-xs font-mono uppercase tracking-wider transition-colors">
@@ -191,13 +191,13 @@ export default function PricingPage() {
       </header>
 
       {/* Hero */}
-      <section className="py-20 px-6">
+      <section className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-950 border border-emerald-800 text-emerald-400 text-xs font-mono uppercase tracking-wider mb-6">
             <Leaf className="w-3 h-3" />
             Carbon Intelligence Pricing
           </div>
-          <h1 className="text-4xl md:text-5xl font-mono font-medium text-neutral-100 tracking-tight mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-mono font-medium text-neutral-100 tracking-tight mb-6">
             Simple, transparent pricing
           </h1>
           <p className="text-lg text-neutral-400 max-w-2xl mx-auto mb-10">
@@ -231,9 +231,9 @@ export default function PricingPage() {
       </section>
 
       {/* Pricing Cards */}
-      <section className="pb-20 px-6">
+      <section className="pb-12 sm:pb-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {tiers.map((tier) => {
               const Icon = tier.icon;
               const price = getPrice(tier);
@@ -320,12 +320,12 @@ export default function PricingPage() {
       </section>
 
       {/* Feature Comparison */}
-      <section className="py-20 px-6 border-t border-neutral-800">
+      <section className="py-12 sm:py-20 px-4 sm:px-6 border-t border-neutral-800">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-mono font-medium text-neutral-100 text-center mb-12">
+          <h2 className="text-xl sm:text-2xl font-mono font-medium text-neutral-100 text-center mb-8 sm:mb-12">
             Compare Features
           </h2>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-neutral-800">
@@ -356,9 +356,9 @@ export default function PricingPage() {
       </section>
 
       {/* Trust Badges */}
-      <section className="py-16 px-6 border-t border-neutral-800 bg-neutral-900/50">
+      <section className="py-12 sm:py-16 px-4 sm:px-6 border-t border-neutral-800 bg-neutral-900/50">
         <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center">
             <div>
               <Shield className="w-8 h-8 text-emerald-500 mx-auto mb-3" />
               <h3 className="font-mono text-neutral-200 mb-1">SOC 2 Type II</h3>
@@ -384,9 +384,9 @@ export default function PricingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 px-6 border-t border-neutral-800">
+      <section className="py-12 sm:py-20 px-4 sm:px-6 border-t border-neutral-800">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-mono font-medium text-neutral-100 text-center mb-12">
+          <h2 className="text-xl sm:text-2xl font-mono font-medium text-neutral-100 text-center mb-8 sm:mb-12">
             Frequently Asked Questions
           </h2>
           <div className="space-y-4">

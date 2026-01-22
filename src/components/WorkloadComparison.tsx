@@ -123,11 +123,11 @@ export function WorkloadComparison() {
           <p className="text-xs text-neutral-500 mt-1">Compare efficiency across workloads</p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-neutral-500 font-mono">Sort by:</span>
+          <span className="text-xs text-neutral-500 font-mono hidden sm:inline">Sort by:</span>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortKey)}
-            className="input py-1.5 px-3 w-auto"
+            className="bg-neutral-800 border border-neutral-700 text-neutral-200 text-sm rounded px-2 py-1.5 focus:border-amber-500 focus:outline-none"
           >
             <option value="cost">Cost</option>
             <option value="energyKwh">Energy</option>

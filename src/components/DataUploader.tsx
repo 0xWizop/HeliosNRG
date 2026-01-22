@@ -339,27 +339,27 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
   return (
     <div className="max-w-4xl mx-auto">
       {/* Progress Steps */}
-      <div className="flex items-center justify-between mb-8">
-        {['Upload', 'Column Mapping', 'Validation', 'Complete'].map((label, index) => {
+      <div className="flex items-center gap-1 sm:gap-2 mb-6 sm:mb-8 overflow-x-auto">
+        {['Upload', 'Mapping', 'Validation', 'Complete'].map((label, index) => {
           const stepIndex = ['upload', 'mapping', 'validation', 'complete'].indexOf(step);
           const isActive = index <= stepIndex;
           const isCurrent = index === stepIndex;
           
           return (
             <div key={label} className="flex items-center">
-              <div className={`flex items-center gap-2 ${isActive ? 'text-amber-500' : 'text-neutral-600'}`}>
-                <div className={`w-8 h-8 flex items-center justify-center text-sm font-mono ${
+              <div className={`flex items-center gap-1.5 sm:gap-2 ${isActive ? 'text-amber-500' : 'text-neutral-600'}`}>
+                <div className={`w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-mono ${
                   isCurrent ? 'bg-amber-500 text-neutral-950' :
                   isActive ? 'bg-amber-900/50 text-amber-500 border border-amber-700' : 'bg-neutral-800 border border-neutral-700 text-neutral-500'
                 }`}>
                   {index + 1}
                 </div>
-                <span className={`text-sm font-mono uppercase tracking-wider ${isCurrent ? 'text-neutral-100' : ''}`}>
+                <span className={`text-[10px] sm:text-sm font-mono uppercase tracking-wider whitespace-nowrap ${isCurrent ? 'text-neutral-100' : ''}`}>
                   {label}
                 </span>
               </div>
               {index < 3 && (
-                <ChevronRight className="w-5 h-5 text-neutral-700 mx-4" />
+                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-neutral-700 mx-1 sm:mx-4 shrink-0" />
               )}
             </div>
           );
@@ -378,7 +378,7 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
           <div
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
-            className="border-2 border-dashed border-neutral-700 p-12 text-center hover:border-amber-500 hover:bg-amber-950/20 transition-colors cursor-pointer"
+            className="border-2 border-dashed border-neutral-700 p-6 sm:p-12 text-center hover:border-amber-500 hover:bg-amber-950/20 transition-colors cursor-pointer"
           >
             <input
               type="file"
@@ -389,11 +389,11 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
             />
             <label htmlFor="data-uploader-file-input" className="cursor-pointer block">
               {isProcessing ? (
-                <RefreshCw className="w-12 h-12 text-amber-500 mx-auto mb-4 animate-spin" />
+                <RefreshCw className="w-8 h-8 sm:w-12 sm:h-12 text-amber-500 mx-auto mb-4 animate-spin" />
               ) : (
-                <Upload className="w-12 h-12 text-neutral-600 mx-auto mb-4" />
+                <Upload className="w-8 h-8 sm:w-12 sm:h-12 text-neutral-600 mx-auto mb-4" />
               )}
-              <p className="text-lg font-medium text-neutral-200 mb-2">
+              <p className="text-base sm:text-lg font-medium text-neutral-200 mb-2">
                 {isProcessing ? 'Processing...' : 'Drop your file here or click to browse'}
               </p>
               <p className="text-sm text-neutral-500">
@@ -402,7 +402,7 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
             </label>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-8 hidden sm:block">
             <h3 className="font-mono text-xs text-neutral-400 uppercase tracking-wider mb-3">Supported Data Sources</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {[
@@ -425,16 +425,16 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
 
       {step === 'mapping' && uploadedFile && (
         <div className="card">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h2 className="text-lg font-mono text-neutral-100 uppercase tracking-wider">Column Mapping</h2>
+              <h2 className="text-base sm:text-lg font-mono text-neutral-100 uppercase tracking-wider">Column Mapping</h2>
               <p className="text-neutral-400 mt-1 text-sm">
-                Verify the detected column mappings for your data
+                Verify the detected column mappings
               </p>
             </div>
-            <div className="flex items-center gap-2 bg-emerald-950 text-emerald-400 px-3 py-1.5 border border-emerald-800">
-              <FileSpreadsheet className="w-4 h-4" />
-              <span className="text-sm font-mono">{uploadedFile.name}</span>
+            <div className="flex items-center gap-2 bg-emerald-950 text-emerald-400 px-3 py-1.5 border border-emerald-800 self-start">
+              <FileSpreadsheet className="w-4 h-4 shrink-0" />
+              <span className="text-xs sm:text-sm font-mono truncate max-w-[150px] sm:max-w-none">{uploadedFile.name}</span>
             </div>
           </div>
 
@@ -450,31 +450,31 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
             </p>
           </div>
 
-          <div className="space-y-3 mb-6">
-            <div className="grid grid-cols-[1fr_1fr_auto] gap-4 text-xs font-mono text-neutral-500 uppercase tracking-wider pb-2 border-b border-neutral-800">
-              <span>Source Column</span>
+          <div className="space-y-3 mb-6 overflow-x-auto">
+            <div className="grid grid-cols-[minmax(100px,1fr)_minmax(100px,1fr)_80px] sm:grid-cols-[1fr_1fr_auto] gap-2 sm:gap-4 text-[10px] sm:text-xs font-mono text-neutral-500 uppercase tracking-wider pb-2 border-b border-neutral-800 min-w-[300px]">
+              <span>Source</span>
               <span>Maps To</span>
-              <span className="w-24 text-right">Confidence</span>
+              <span className="text-right">Conf.</span>
             </div>
             {columnMappings.map((mapping, index) => (
-              <div key={index} className="grid grid-cols-[1fr_1fr_auto] gap-4 items-center py-2">
-                <div className="bg-neutral-900 text-neutral-300 px-3 py-2 border border-neutral-800 text-sm font-mono truncate">
+              <div key={index} className="grid grid-cols-[minmax(100px,1fr)_minmax(100px,1fr)_80px] sm:grid-cols-[1fr_1fr_auto] gap-2 sm:gap-4 items-center py-2 min-w-[300px]">
+                <div className="bg-neutral-900 text-neutral-300 px-2 sm:px-3 py-2 border border-neutral-800 text-xs sm:text-sm font-mono truncate">
                   {mapping.sourceColumn}
                 </div>
                 <select 
-                  className="input text-sm h-[38px]"
+                  className="input text-xs sm:text-sm h-[34px] sm:h-[38px]"
                   defaultValue={mapping.targetColumn}
                 >
                   <option value={mapping.targetColumn}>{mapping.targetColumn}</option>
                 </select>
-                <div className="flex items-center gap-2 w-24">
-                  <div className="flex-1 h-1.5 bg-neutral-800 overflow-hidden">
+                <div className="flex items-center gap-1 sm:gap-2 w-[80px] sm:w-24">
+                  <div className="flex-1 h-1 sm:h-1.5 bg-neutral-800 overflow-hidden">
                     <div 
                       className="h-full bg-emerald-500" 
                       style={{ width: `${mapping.confidence * 100}%` }}
                     />
                   </div>
-                  <span className="text-xs font-mono text-neutral-400 w-10 text-right">
+                  <span className="text-[10px] sm:text-xs font-mono text-neutral-400 w-8 sm:w-10 text-right">
                     {(mapping.confidence * 100).toFixed(0)}%
                   </span>
                 </div>

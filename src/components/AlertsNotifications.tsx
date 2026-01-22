@@ -350,34 +350,35 @@ export function AlertsNotifications() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-neutral-800 pb-4">
+      <div className="grid grid-cols-2 gap-2 border-b border-neutral-800 pb-4">
         <button
           onClick={() => setActiveTab('notifications')}
-          className={`px-4 py-2 text-sm font-mono uppercase tracking-wider flex items-center gap-2 ${
+          className={`px-3 py-2 text-xs sm:text-sm font-mono uppercase tracking-wider flex items-center justify-center gap-1.5 ${
             activeTab === 'notifications'
               ? 'bg-amber-600 text-neutral-950'
               : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700'
           }`}
         >
-          <Bell className="w-4 h-4" />
-          Notifications
+          <Bell className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">Notifications</span>
+          <span className="sm:hidden">Alerts</span>
           {unreadCount > 0 && (
-            <span className="px-1.5 py-0.5 bg-red-600 text-white text-xs rounded-full">
+            <span className="px-1.5 py-0.5 bg-red-600 text-white text-[10px] rounded-full">
               {unreadCount}
             </span>
           )}
         </button>
         <button
           onClick={() => setActiveTab('rules')}
-          className={`px-4 py-2 text-sm font-mono uppercase tracking-wider flex items-center gap-2 ${
+          className={`px-3 py-2 text-xs sm:text-sm font-mono uppercase tracking-wider flex items-center justify-center gap-1.5 ${
             activeTab === 'rules'
               ? 'bg-amber-600 text-neutral-950'
               : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700'
           }`}
         >
-          <AlertTriangle className="w-4 h-4" />
-          Alert Rules
-          <span className="text-xs opacity-70">({rules.filter(r => r.enabled).length})</span>
+          <AlertTriangle className="w-3.5 h-3.5" />
+          Rules
+          <span className="text-[10px] opacity-70">({rules.filter(r => r.enabled).length})</span>
         </button>
       </div>
 

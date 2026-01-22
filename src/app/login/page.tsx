@@ -152,7 +152,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950 flex">
+    <div className="fixed inset-0 bg-neutral-950 flex overflow-hidden">
       {/* Left side - Branding */}
       <div className="hidden lg:flex lg:w-1/2 bg-neutral-900 border-r border-neutral-800 flex-col justify-between p-12">
         <div>
@@ -193,21 +193,21 @@ export default function LoginPage() {
       </div>
 
       {/* Right side - Auth Form */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-8 overflow-hidden">
+        <div className="w-full max-w-sm">
           {/* Mobile logo */}
-          <div className="lg:hidden mb-8">
-            <Link href="/" className="flex items-center gap-3">
+          <div className="lg:hidden mb-4 text-center">
+            <Link href="/" className="inline-flex items-center gap-3">
               <div className="w-2 h-2 bg-amber-500 rounded-full" />
               <span className="text-sm font-mono font-medium tracking-wider text-neutral-100">HELIOS</span>
             </Link>
           </div>
 
-          <div className="mb-8">
-            <h2 className="text-xl font-mono text-neutral-100 tracking-tight mb-2">
+          <div className="mb-4">
+            <h2 className="text-lg font-mono text-neutral-100 tracking-tight mb-1">
               {mode === 'login' ? 'Welcome back' : 'Create your account'}
             </h2>
-            <p className="text-sm text-neutral-500">
+            <p className="text-xs text-neutral-500">
               {mode === 'login' 
                 ? 'Sign in to access your dashboard' 
                 : 'Get started with Helios in minutes'}
@@ -216,15 +216,15 @@ export default function LoginPage() {
 
           {/* Error message */}
           {error && (
-            <div className="mb-6 p-4 bg-red-950/50 border border-red-900 flex items-center gap-3">
-              <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
-              <p className="text-sm text-red-400">{error}</p>
+            <div className="mb-3 p-3 bg-red-950/50 border border-red-900 flex items-center gap-2">
+              <AlertCircle className="w-3 h-3 text-red-500 shrink-0" />
+              <p className="text-xs text-red-400">{error}</p>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-2">
             <div>
-              <label className="block text-xs font-mono text-neutral-500 uppercase tracking-wider mb-2">
+              <label className="block text-[10px] font-mono text-neutral-500 uppercase tracking-wider mb-1">
                 Email
               </label>
               <div className="relative">
@@ -241,7 +241,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-mono text-neutral-500 uppercase tracking-wider mb-2">
+              <label className="block text-[10px] font-mono text-neutral-500 uppercase tracking-wider mb-1">
                 Password
               </label>
               <div className="relative">
@@ -266,7 +266,7 @@ export default function LoginPage() {
 
             {mode === 'signup' && (
               <div>
-                <label className="block text-xs font-mono text-neutral-500 uppercase tracking-wider mb-2">
+                <label className="block text-[10px] font-mono text-neutral-500 uppercase tracking-wider mb-1">
                   Confirm Password
                 </label>
                 <div className="relative">
@@ -286,7 +286,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full btn-primary flex items-center justify-center gap-2 py-3"
+              className="w-full btn-primary flex items-center justify-center gap-2 py-2.5"
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -299,7 +299,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="relative my-6">
+          <div className="relative my-3">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-neutral-800" />
             </div>
@@ -308,11 +308,11 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             <button
               onClick={() => handleSSOSignIn('google')}
               disabled={isLoading}
-              className="w-full bg-neutral-900 border border-neutral-800 text-neutral-200 py-3 px-4 font-mono text-sm uppercase tracking-wider hover:bg-neutral-800 transition-colors flex items-center justify-center gap-3"
+              className="w-full bg-neutral-900 border border-neutral-800 text-neutral-200 py-2.5 px-4 font-mono text-xs uppercase tracking-wider hover:bg-neutral-800 transition-colors flex items-center justify-center gap-3"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -326,7 +326,7 @@ export default function LoginPage() {
             <button
               onClick={() => handleSSOSignIn('microsoft')}
               disabled={isLoading}
-              className="w-full bg-neutral-900 border border-neutral-800 text-neutral-200 py-3 px-4 font-mono text-sm uppercase tracking-wider hover:bg-neutral-800 transition-colors flex items-center justify-center gap-3"
+              className="w-full bg-neutral-900 border border-neutral-800 text-neutral-200 py-2.5 px-4 font-mono text-xs uppercase tracking-wider hover:bg-neutral-800 transition-colors flex items-center justify-center gap-3"
             >
               <svg className="w-4 h-4" viewBox="0 0 23 23">
                 <path fill="#f25022" d="M1 1h10v10H1z"/>
@@ -338,7 +338,7 @@ export default function LoginPage() {
             </button>
           </div>
 
-          <p className="mt-8 text-center text-sm text-neutral-500">
+          <p className="mt-3 text-center text-xs text-neutral-500">
             {mode === 'login' ? (
               <>
                 Don't have an account?{' '}

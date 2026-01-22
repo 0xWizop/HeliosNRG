@@ -269,14 +269,14 @@ export function AssumptionPanel() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg font-mono text-neutral-100 uppercase tracking-wider">Assumption Governance</h2>
-          <p className="text-neutral-400 mt-1 text-sm">
-            All assumptions are visible, editable, and affect confidence scores
+          <h2 className="text-base sm:text-lg font-mono text-neutral-100 uppercase tracking-wider">Assumptions</h2>
+          <p className="text-neutral-400 mt-1 text-xs sm:text-sm">
+            Editable values affecting confidence
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {isSaving && <span className="text-xs text-amber-500">Saving...</span>}
           <input
             ref={fileInputRef}
@@ -287,31 +287,31 @@ export function AssumptionPanel() {
           />
           <button 
             onClick={() => fileInputRef.current?.click()}
-            className="btn-outline flex items-center gap-2"
+            className="btn-outline flex items-center gap-1 text-xs px-2 py-1.5"
           >
-            <Upload className="w-4 h-4" />
-            Import
+            <Upload className="w-3 h-3" />
+            <span className="hidden sm:inline">Import</span>
           </button>
           <button 
             onClick={handleExport}
-            className="btn-outline flex items-center gap-2"
+            className="btn-outline flex items-center gap-1 text-xs px-2 py-1.5"
           >
-            <Download className="w-4 h-4" />
-            Export
+            <Download className="w-3 h-3" />
+            <span className="hidden sm:inline">Export</span>
           </button>
         </div>
       </div>
 
       {/* Overall Confidence */}
       <div className="card bg-amber-950/30 border-amber-800">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h3 className="font-medium text-neutral-100 mb-1">Overall Confidence Score</h3>
-            <p className="text-sm text-neutral-400">
-              Based on data sources and assumption quality
+            <h3 className="font-medium text-neutral-100 mb-1 text-sm">Overall Confidence</h3>
+            <p className="text-xs text-neutral-400">
+              Based on data sources
             </p>
           </div>
-          <div className="w-48">
+          <div className="w-full sm:w-48">
             <ConfidenceIndicator score={overallConfidence} />
           </div>
         </div>
@@ -331,15 +331,13 @@ export function AssumptionPanel() {
       )}
 
       {/* Info Banner */}
-      <div className="bg-blue-950/50 border border-blue-800 p-4">
+      <div className="bg-blue-950/50 border border-blue-800 p-3 hidden sm:block">
         <div className="flex items-start gap-3">
-          <Info className="w-5 h-5 text-blue-400 mt-0.5" />
+          <Info className="w-5 h-5 text-blue-400 mt-0.5 shrink-0" />
           <div>
-            <h4 className="font-medium text-blue-300">How Assumptions Work</h4>
-            <p className="text-sm text-blue-400/70 mt-1">
-              Every calculation in Helios uses explicit assumptions. You can override any value 
-              with your own measurements. Customer-provided data increases confidence scores; 
-              estimates and defaults may reduce them. Changes are automatically saved to your team.
+            <h4 className="font-medium text-blue-300 text-sm">How Assumptions Work</h4>
+            <p className="text-xs text-blue-400/70 mt-1">
+              Override values with your own measurements. Customer data increases confidence.
             </p>
           </div>
         </div>

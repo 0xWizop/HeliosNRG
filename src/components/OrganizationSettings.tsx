@@ -124,23 +124,24 @@ export function OrganizationSettings() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-x-hidden">
       {/* Tab Navigation */}
-      <div className="flex gap-1 border-b border-neutral-800 pb-px">
+      <div className="flex gap-1 border-b border-neutral-800 pb-px overflow-x-auto">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           return (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 text-sm font-mono uppercase tracking-wider transition-colors ${
+              className={`flex items-center gap-1.5 px-2 sm:px-4 py-2 text-[10px] sm:text-sm font-mono uppercase tracking-wider transition-colors whitespace-nowrap shrink-0 ${
                 activeTab === tab.id
                   ? 'text-amber-500 border-b-2 border-amber-500 -mb-px'
                   : 'text-neutral-500 hover:text-neutral-300'
               }`}
             >
-              <Icon className="w-4 h-4" />
-              {tab.label}
+              <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">{tab.label}</span>
+              <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
             </button>
           );
         })}

@@ -334,7 +334,8 @@ export function TeamManagement() {
             className="btn-primary flex items-center gap-2"
           >
             <UserPlus className="w-4 h-4" />
-            Invite Member
+            <span className="hidden sm:inline">Invite Member</span>
+            <span className="sm:hidden">Invite</span>
           </button>
         </div>
       </div>
@@ -478,15 +479,15 @@ export function TeamManagement() {
             return (
               <div
                 key={member.id}
-                className="flex items-center justify-between p-4 bg-neutral-900 border border-neutral-800 hover:bg-neutral-800/50 transition-colors"
+                className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-neutral-900 border border-neutral-800 hover:bg-neutral-800/50 transition-colors gap-3"
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-neutral-800 border border-neutral-700 flex items-center justify-center text-neutral-400 font-mono text-sm">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-neutral-800 border border-neutral-700 flex items-center justify-center text-neutral-400 font-mono text-xs sm:text-sm shrink-0">
                     {member.displayName.split(' ').map(n => n[0]).join('')}
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-neutral-200">{member.displayName}</p>
-                    <p className="text-xs text-neutral-500">{member.email}</p>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-neutral-200 truncate">{member.displayName}</p>
+                    <p className="text-xs text-neutral-500 truncate">{member.email}</p>
                   </div>
                 </div>
 

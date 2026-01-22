@@ -1,0 +1,206 @@
+[debug] [2026-01-22T05:16:20.306Z] ----------------------------------------------------------------------
+[debug] [2026-01-22T05:16:20.323Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\teaga\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only hosting
+[debug] [2026-01-22T05:16:20.324Z] CLI Version:   15.3.1
+[debug] [2026-01-22T05:16:20.324Z] Platform:      win32
+[debug] [2026-01-22T05:16:20.324Z] Node Version:  v22.15.0
+[debug] [2026-01-22T05:16:20.325Z] Time:          Wed Jan 21 2026 21:16:20 GMT-0800 (Pacific Standard Time)
+[debug] [2026-01-22T05:16:20.325Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-01-22T05:16:59.995Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-01-22T05:16:59.995Z] > authorizing via signed-in user (incubatorprotocol@gmail.com)
+[debug] [2026-01-22T05:16:59.996Z] [iam] checking project heliosnrg-2ab01 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-01-22T05:16:59.997Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:16:59.997Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:16:59.998Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/heliosnrg-2ab01:testIamPermissions [none]
+[debug] [2026-01-22T05:16:59.998Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/heliosnrg-2ab01:testIamPermissions x-goog-quota-user=projects/heliosnrg-2ab01
+[debug] [2026-01-22T05:16:59.998Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/heliosnrg-2ab01:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-01-22T05:17:01.071Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/heliosnrg-2ab01:testIamPermissions 200
+[debug] [2026-01-22T05:17:01.072Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/heliosnrg-2ab01:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-01-22T05:17:01.072Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:01.072Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:01.072Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/heliosnrg-2ab01 [none]
+[debug] [2026-01-22T05:17:01.339Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/heliosnrg-2ab01 200
+[debug] [2026-01-22T05:17:01.340Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/heliosnrg-2ab01 {"projectId":"heliosnrg-2ab01","projectNumber":"1004558003022","displayName":"HeliosNRG","name":"projects/heliosnrg-2ab01","resources":{"hostingSite":"heliosnrg-2ab01"},"state":"ACTIVE","etag":"1_88a15029-00de-4322-94e0-9169e6951634"}
+[info] 
+[info] === Deploying to 'heliosnrg-2ab01'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2026-01-22T05:17:01.346Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:01.346Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:01.346Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/heliosnrg-2ab01/versions [none]
+[debug] [2026-01-22T05:17:01.346Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/heliosnrg-2ab01/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2026-01-22T05:17:02.111Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/heliosnrg-2ab01/versions 200
+[debug] [2026-01-22T05:17:02.111Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/heliosnrg-2ab01/versions {"name":"projects/1004558003022/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[heliosnrg-2ab01]: beginning deploy... 
+[info] i  hosting[heliosnrg-2ab01]: found 48 files in out 
+[debug] [2026-01-22T05:17:02.138Z] [hosting] uploading with 200 concurrency
+[debug] [2026-01-22T05:17:02.271Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.271Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.272Z] [hosting] hash cache [b3V0] stored for 48 files
+[debug] [2026-01-22T05:17:02.272Z] [hosting][hash queue][FINAL] {"max":122,"min":97,"avg":103.35416666666669,"active":0,"complete":48,"success":48,"errored":0,"retried":0,"total":48,"elapsed":130}
+[debug] [2026-01-22T05:17:02.273Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/1004558003022/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7:populateFiles [none]
+[debug] [2026-01-22T05:17:02.273Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/1004558003022/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7:populateFiles {"files":{"/robots.txt":"f3f9f906828db7f0be6203fcccec36d1a8cceebcb7713f6544d6f6f5c2e8cd72","/index.html":"a279a13c7f4ffbdc29caac48b5bdbb6d6a45dd712a3da3835c161f6eb9152f1f","/sitemap.xml":"1e301a497ea0107b87e441ec6071b9a808e7dec93675fb2204f92ed3106f14a9","/index.txt":"a3c5d25b639b5794264e9f9874fe05cc797480055ad5e56aa275692f7ef20809","/404.html":"2cff9ba3404279f3bb16c4ffcf8305fd6f6d7b4e71683bac07612294cb1056f7","/_next/static/chunks/webpack-5a142a4b5e7fa2f2.js":"2a4bdbc44652aa476a5b18d33b1ebdb47d51e1dc58e62d2ef16dc9761062e913","/_next/static/css/c71e08c8051f83dc.css":"08c13d74c20da318a51b60ab23c44ce711b1341e58a42bc4a0baccdcedf993f9","/_next/static/chunks/main-app-002f373e032c0bd4.js":"28f7b94a0785daefe2a5171fafac5f0ef2756f0549d66ee24f17bd27602a5327","/_next/static/chunks/553.aad6cac1722fb725.js":"e10a16aa0bc6e9e1454fbdf0bcb8f9cb73de68a5b6d889ea4ef6eaabaa332d4f","/_next/static/chunks/577.d81a94577385c5db.js":"c23cd495b8198f7d802844f9ee311ee8a4e2f948dd1e01605f33536e797819ad","/_next/static/chunks/pages/_error-28b803cb2479b966.js":"7d9cf8c25606090a38e584349aff5412124a48cfc0f4151bec472d68f8f8ea8d","/_next/static/chunks/451-06c0632500079cc3.js":"275848f795a8e2643350386a42f49d9d6fce7aa21715f5f266311e118c04f671","/_next/static/chunks/411.497271701669eada.js":"8dfee827c268d594a5a2d4e34c679dfe7fbae80596c9d6593a0af0e63a886c8c","/_next/static/chunks/app/page-83dab49ae5c5ef80.js":"cab9fb837e4883ad07131b3654303aabcaf6b19d32ae97f48744feb10297082f","/_next/static/chunks/app/layout-f550d59c615de623.js":"55543fa35a6ade3d7ceac306a0335d7a522f3b38beb96218083fae6484bf73ae","/_next/static/chunks/app/_not-found/page-80a46bd8ec713df3.js":"ce111f50a2db5741d15f15d3c667b8bcf17ab53da25be9346314c9c45a090074","/_next/static/chunks/app/setup/page-ae01e2e0cd428e2d.js":"17e902df9dfdfc80a763cc7f3eddfa0dbec3b6c7c24ba89e0be5e7d2e49f0384","/_next/static/chunks/app/pricing/page-3aba878f72d607b8.js":"3b477622ae4601e2a885bca25cf4476c55a6cf7dd2b9de8a9c3c0f9da2daa3c2","/_next/static/chunks/pages/_app-15e2daefa259f0b5.js":"cd33ae976ab7bf7d3a3b9eaa1d53021323c9a94e19a82698fc88888b6e37b5f4","/_next/static/BEvw719vWqS6ZRNsXdH5F/_buildManifest.js":"1f941c987dcb6c1048128c591c764edc097ff021d67f14cac218fbba09ff6591","/_next/static/BEvw719vWqS6ZRNsXdH5F/_ssgManifest.js":"dc28a4dc92fe352ed5d2201bd3972ce47691bc8e89e0400a68d1541d0567c6d5","/_next/static/chunks/app/login/page-bbf2f16ab3cc36e9.js":"37e1ef3f144ba61667ec5e4029bf8613a6e2c05f5eebc13ac63a755c42c2a046","/_next/static/chunks/app/methodology/page-f33fbf20e807fadb.js":"b009f944a4945861c511c9350723154bf5383940195ccd6652d39ef9b88181eb","/setup/index.html":"60303836f405011731e4b79fd79483961cdbac9a8f5a2be585e637618deb3d4e","/setup/index.txt":"9c396cac6ddf2196c3cff336ecc7a87c8933e15806d67b767d378ba495bac210","/pricing/index.txt":"a6c4ae86e70dbb9e8b02676f323f28df464c9d84c79173d68c5d7cf50fbf88c4","/methodology/index.txt":"62d3611174d192bb7086f78c979c122758174f6d444cf9c6d0326a755790ec7b","/login/index.txt":"5f0d8b69a8fc4f1366fa7fefe109d95236176a9286358d56ecb2e487b9531355","/pricing/index.html":"9a2051d319e33d44642b1cc8f531dfd53f1849a7a7151b16996f540a5110a195","/methodology/index.html":"65a4160cb6680b259316bac6244489331b36700a18d02a388664ac7a73dddc5e","/dashboard/index.txt":"797e92c023c88db94c1a0318a9bed72938f129bf0d22f4b6845354e0101954bb","/dashboard/index.html":"e45ae61900260faf616898e7a12ef1b78ea2180dc541dd9a878a900517f11c17","/404/index.html":"2cff9ba3404279f3bb16c4ffcf8305fd6f6d7b4e71683bac07612294cb1056f7","/login/index.html":"309f1f72cda92914377431e4a8e29a33e156582d01b19736f85fcac497a6f979","/_next/static/chunks/969.913842fbff595a82.js":"2b87cc15cf681964721308d8b42054388359aef3689c1e9dc507e580857bfdd0","/_next/static/chunks/ebf8faf4-67f65685a3a5b7e6.js":"3761d3f12951499a2599b0c958194081e3af3b9c65e2d404a1602bdcddf0129a","/_next/static/chunks/bc98253f.2a86d0955713b458.js":"c1fa528523a012e566bdc1db0b87812d5519704fc5194096b661976e56f2c9ff","/_next/static/chunks/966-4240666e4b4add05.js":"d358fbe9b487a523d91f51b562d78bee83a1dc90e1caa79133e8f165e25c8d82","/_next/static/chunks/main-c1e217a36f551784.js":"fc6888c64a9382ac10a8527d6d50c2a550db61fecb7cd81e370c746ede52edc2","/_next/static/chunks/polyfills-42372ed130431b0a.js":"18e28d3214eda45048d80d3925ea7627b809e69ad2e95f7f98459e9146a61c3d","/_next/static/chunks/framework-00a8ba1a63cfdc9e.js":"e8560df2e3fee19797a10b283f0109309f7b347a1e8a7b7628627ac30ac54dc5","/_next/static/chunks/547-7495e495b3df8bc3.js":"1b2f3428cfcb3c8231d9f3f1fa6a090863505780fefcd39f82da9f7724944a16","/_next/static/chunks/app/dashboard/page-6c8596db53829fee.js":"1222089af6e9ae9015e86ecf91f9170f7019df50f53b231b75f5b47e77fd085f","/_next/static/chunks/fd9d1056-cd83ff881139d3f3.js":"f819edf920123cc46f5537669231c0a038a5b09676dab7052d38c683d2de716c","/_next/static/chunks/53c0104b-700a4a5002af06f9.js":"2877e513d2f78c6af7c5d56e872d7f17946d0839614e3694c14b94a645fe49de","/_next/static/chunks/ad2866b8.470e6af3964e3753.js":"1da4feb2a0100f8625f540d94a0c320e72987bd163c01445344685518958c1f6","/_next/static/chunks/164f4fb6.d2ebae42c5069d50.js":"358fb95ae7f2dff18673ea39394e1afd20d4780bdc6a6714ade3aa32715fdc03","/_next/static/chunks/739-736e4791f4c4a789.js":"3f329589c394543092519edd2f683977d277e6ea6aa687f29ba15ec13a61b093"}}
+[debug] [2026-01-22T05:17:02.541Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/1004558003022/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7:populateFiles 200
+[debug] [2026-01-22T05:17:02.541Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/1004558003022/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7:populateFiles {"uploadRequiredHashes":["1e301a497ea0107b87e441ec6071b9a808e7dec93675fb2204f92ed3106f14a9","a279a13c7f4ffbdc29caac48b5bdbb6d6a45dd712a3da3835c161f6eb9152f1f","e45ae61900260faf616898e7a12ef1b78ea2180dc541dd9a878a900517f11c17","2cff9ba3404279f3bb16c4ffcf8305fd6f6d7b4e71683bac07612294cb1056f7","08c13d74c20da318a51b60ab23c44ce711b1341e58a42bc4a0baccdcedf993f9","797e92c023c88db94c1a0318a9bed72938f129bf0d22f4b6845354e0101954bb","1222089af6e9ae9015e86ecf91f9170f7019df50f53b231b75f5b47e77fd085f","a3c5d25b639b5794264e9f9874fe05cc797480055ad5e56aa275692f7ef20809","37e1ef3f144ba61667ec5e4029bf8613a6e2c05f5eebc13ac63a755c42c2a046","62d3611174d192bb7086f78c979c122758174f6d444cf9c6d0326a755790ec7b","17e902df9dfdfc80a763cc7f3eddfa0dbec3b6c7c24ba89e0be5e7d2e49f0384","a6c4ae86e70dbb9e8b02676f323f28df464c9d84c79173d68c5d7cf50fbf88c4","9a2051d319e33d44642b1cc8f531dfd53f1849a7a7151b16996f540a5110a195","60303836f405011731e4b79fd79483961cdbac9a8f5a2be585e637618deb3d4e","309f1f72cda92914377431e4a8e29a33e156582d01b19736f85fcac497a6f979","5f0d8b69a8fc4f1366fa7fefe109d95236176a9286358d56ecb2e487b9531355","9c396cac6ddf2196c3cff336ecc7a87c8933e15806d67b767d378ba495bac210","65a4160cb6680b259316bac6244489331b36700a18d02a388664ac7a73dddc5e"],"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files"}
+[debug] [2026-01-22T05:17:02.541Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.541Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.541Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.541Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.541Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.542Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.543Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.544Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:02.544Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/1e301a497ea0107b87e441ec6071b9a808e7dec93675fb2204f92ed3106f14a9 [none]
+[debug] [2026-01-22T05:17:02.544Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/1e301a497ea0107b87e441ec6071b9a808e7dec93675fb2204f92ed3106f14a9 [stream]
+[debug] [2026-01-22T05:17:02.545Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/a279a13c7f4ffbdc29caac48b5bdbb6d6a45dd712a3da3835c161f6eb9152f1f [none]
+[debug] [2026-01-22T05:17:02.545Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/a279a13c7f4ffbdc29caac48b5bdbb6d6a45dd712a3da3835c161f6eb9152f1f [stream]
+[debug] [2026-01-22T05:17:02.546Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/e45ae61900260faf616898e7a12ef1b78ea2180dc541dd9a878a900517f11c17 [none]
+[debug] [2026-01-22T05:17:02.546Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/e45ae61900260faf616898e7a12ef1b78ea2180dc541dd9a878a900517f11c17 [stream]
+[debug] [2026-01-22T05:17:02.546Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/2cff9ba3404279f3bb16c4ffcf8305fd6f6d7b4e71683bac07612294cb1056f7 [none]
+[debug] [2026-01-22T05:17:02.546Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/2cff9ba3404279f3bb16c4ffcf8305fd6f6d7b4e71683bac07612294cb1056f7 [stream]
+[debug] [2026-01-22T05:17:02.547Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/08c13d74c20da318a51b60ab23c44ce711b1341e58a42bc4a0baccdcedf993f9 [none]
+[debug] [2026-01-22T05:17:02.547Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/08c13d74c20da318a51b60ab23c44ce711b1341e58a42bc4a0baccdcedf993f9 [stream]
+[debug] [2026-01-22T05:17:02.549Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/797e92c023c88db94c1a0318a9bed72938f129bf0d22f4b6845354e0101954bb [none]
+[debug] [2026-01-22T05:17:02.549Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/797e92c023c88db94c1a0318a9bed72938f129bf0d22f4b6845354e0101954bb [stream]
+[debug] [2026-01-22T05:17:02.550Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/1222089af6e9ae9015e86ecf91f9170f7019df50f53b231b75f5b47e77fd085f [none]
+[debug] [2026-01-22T05:17:02.550Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/1222089af6e9ae9015e86ecf91f9170f7019df50f53b231b75f5b47e77fd085f [stream]
+[debug] [2026-01-22T05:17:02.550Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/a3c5d25b639b5794264e9f9874fe05cc797480055ad5e56aa275692f7ef20809 [none]
+[debug] [2026-01-22T05:17:02.550Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/a3c5d25b639b5794264e9f9874fe05cc797480055ad5e56aa275692f7ef20809 [stream]
+[debug] [2026-01-22T05:17:02.551Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/37e1ef3f144ba61667ec5e4029bf8613a6e2c05f5eebc13ac63a755c42c2a046 [none]
+[debug] [2026-01-22T05:17:02.551Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/37e1ef3f144ba61667ec5e4029bf8613a6e2c05f5eebc13ac63a755c42c2a046 [stream]
+[debug] [2026-01-22T05:17:02.551Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/62d3611174d192bb7086f78c979c122758174f6d444cf9c6d0326a755790ec7b [none]
+[debug] [2026-01-22T05:17:02.552Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/62d3611174d192bb7086f78c979c122758174f6d444cf9c6d0326a755790ec7b [stream]
+[debug] [2026-01-22T05:17:02.552Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/17e902df9dfdfc80a763cc7f3eddfa0dbec3b6c7c24ba89e0be5e7d2e49f0384 [none]
+[debug] [2026-01-22T05:17:02.552Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/17e902df9dfdfc80a763cc7f3eddfa0dbec3b6c7c24ba89e0be5e7d2e49f0384 [stream]
+[debug] [2026-01-22T05:17:02.553Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/a6c4ae86e70dbb9e8b02676f323f28df464c9d84c79173d68c5d7cf50fbf88c4 [none]
+[debug] [2026-01-22T05:17:02.553Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/a6c4ae86e70dbb9e8b02676f323f28df464c9d84c79173d68c5d7cf50fbf88c4 [stream]
+[debug] [2026-01-22T05:17:02.553Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/9a2051d319e33d44642b1cc8f531dfd53f1849a7a7151b16996f540a5110a195 [none]
+[debug] [2026-01-22T05:17:02.553Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/9a2051d319e33d44642b1cc8f531dfd53f1849a7a7151b16996f540a5110a195 [stream]
+[debug] [2026-01-22T05:17:02.554Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/60303836f405011731e4b79fd79483961cdbac9a8f5a2be585e637618deb3d4e [none]
+[debug] [2026-01-22T05:17:02.554Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/60303836f405011731e4b79fd79483961cdbac9a8f5a2be585e637618deb3d4e [stream]
+[debug] [2026-01-22T05:17:02.554Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/309f1f72cda92914377431e4a8e29a33e156582d01b19736f85fcac497a6f979 [none]
+[debug] [2026-01-22T05:17:02.554Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/309f1f72cda92914377431e4a8e29a33e156582d01b19736f85fcac497a6f979 [stream]
+[debug] [2026-01-22T05:17:02.555Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/5f0d8b69a8fc4f1366fa7fefe109d95236176a9286358d56ecb2e487b9531355 [none]
+[debug] [2026-01-22T05:17:02.555Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/5f0d8b69a8fc4f1366fa7fefe109d95236176a9286358d56ecb2e487b9531355 [stream]
+[debug] [2026-01-22T05:17:02.555Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/9c396cac6ddf2196c3cff336ecc7a87c8933e15806d67b767d378ba495bac210 [none]
+[debug] [2026-01-22T05:17:02.555Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/9c396cac6ddf2196c3cff336ecc7a87c8933e15806d67b767d378ba495bac210 [stream]
+[debug] [2026-01-22T05:17:02.556Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/65a4160cb6680b259316bac6244489331b36700a18d02a388664ac7a73dddc5e [none]
+[debug] [2026-01-22T05:17:02.556Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/65a4160cb6680b259316bac6244489331b36700a18d02a388664ac7a73dddc5e [stream]
+[debug] [2026-01-22T05:17:02.557Z] [hosting][populate queue][FINAL] {"max":274,"min":274,"avg":274,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":287}
+[debug] [2026-01-22T05:17:02.557Z] [hosting] uploads queued: 18
+[debug] [2026-01-22T05:17:03.107Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/5f0d8b69a8fc4f1366fa7fefe109d95236176a9286358d56ecb2e487b9531355 200
+[debug] [2026-01-22T05:17:03.107Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/5f0d8b69a8fc4f1366fa7fefe109d95236176a9286358d56ecb2e487b9531355 [stream]
+[debug] [2026-01-22T05:17:03.108Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/62d3611174d192bb7086f78c979c122758174f6d444cf9c6d0326a755790ec7b 200
+[debug] [2026-01-22T05:17:03.108Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/62d3611174d192bb7086f78c979c122758174f6d444cf9c6d0326a755790ec7b [stream]
+[debug] [2026-01-22T05:17:03.161Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/60303836f405011731e4b79fd79483961cdbac9a8f5a2be585e637618deb3d4e 200
+[debug] [2026-01-22T05:17:03.161Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/60303836f405011731e4b79fd79483961cdbac9a8f5a2be585e637618deb3d4e [stream]
+[debug] [2026-01-22T05:17:03.198Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/65a4160cb6680b259316bac6244489331b36700a18d02a388664ac7a73dddc5e 200
+[debug] [2026-01-22T05:17:03.198Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/65a4160cb6680b259316bac6244489331b36700a18d02a388664ac7a73dddc5e [stream]
+[debug] [2026-01-22T05:17:03.200Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/a6c4ae86e70dbb9e8b02676f323f28df464c9d84c79173d68c5d7cf50fbf88c4 200
+[debug] [2026-01-22T05:17:03.200Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/a6c4ae86e70dbb9e8b02676f323f28df464c9d84c79173d68c5d7cf50fbf88c4 [stream]
+[debug] [2026-01-22T05:17:03.243Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/e45ae61900260faf616898e7a12ef1b78ea2180dc541dd9a878a900517f11c17 200
+[debug] [2026-01-22T05:17:03.243Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/e45ae61900260faf616898e7a12ef1b78ea2180dc541dd9a878a900517f11c17 [stream]
+[debug] [2026-01-22T05:17:03.248Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/a279a13c7f4ffbdc29caac48b5bdbb6d6a45dd712a3da3835c161f6eb9152f1f 200
+[debug] [2026-01-22T05:17:03.248Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/a279a13c7f4ffbdc29caac48b5bdbb6d6a45dd712a3da3835c161f6eb9152f1f [stream]
+[debug] [2026-01-22T05:17:03.250Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/1e301a497ea0107b87e441ec6071b9a808e7dec93675fb2204f92ed3106f14a9 200
+[debug] [2026-01-22T05:17:03.250Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/1e301a497ea0107b87e441ec6071b9a808e7dec93675fb2204f92ed3106f14a9 [stream]
+[debug] [2026-01-22T05:17:03.274Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/797e92c023c88db94c1a0318a9bed72938f129bf0d22f4b6845354e0101954bb 200
+[debug] [2026-01-22T05:17:03.274Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/797e92c023c88db94c1a0318a9bed72938f129bf0d22f4b6845354e0101954bb [stream]
+[debug] [2026-01-22T05:17:03.280Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/2cff9ba3404279f3bb16c4ffcf8305fd6f6d7b4e71683bac07612294cb1056f7 200
+[debug] [2026-01-22T05:17:03.280Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/2cff9ba3404279f3bb16c4ffcf8305fd6f6d7b4e71683bac07612294cb1056f7 [stream]
+[debug] [2026-01-22T05:17:03.281Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/9a2051d319e33d44642b1cc8f531dfd53f1849a7a7151b16996f540a5110a195 200
+[debug] [2026-01-22T05:17:03.281Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/9a2051d319e33d44642b1cc8f531dfd53f1849a7a7151b16996f540a5110a195 [stream]
+[debug] [2026-01-22T05:17:03.308Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/1222089af6e9ae9015e86ecf91f9170f7019df50f53b231b75f5b47e77fd085f 200
+[debug] [2026-01-22T05:17:03.308Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/1222089af6e9ae9015e86ecf91f9170f7019df50f53b231b75f5b47e77fd085f [stream]
+[debug] [2026-01-22T05:17:03.308Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/17e902df9dfdfc80a763cc7f3eddfa0dbec3b6c7c24ba89e0be5e7d2e49f0384 200
+[debug] [2026-01-22T05:17:03.308Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/17e902df9dfdfc80a763cc7f3eddfa0dbec3b6c7c24ba89e0be5e7d2e49f0384 [stream]
+[debug] [2026-01-22T05:17:03.379Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/37e1ef3f144ba61667ec5e4029bf8613a6e2c05f5eebc13ac63a755c42c2a046 200
+[debug] [2026-01-22T05:17:03.379Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/37e1ef3f144ba61667ec5e4029bf8613a6e2c05f5eebc13ac63a755c42c2a046 [stream]
+[debug] [2026-01-22T05:17:03.432Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/9c396cac6ddf2196c3cff336ecc7a87c8933e15806d67b767d378ba495bac210 200
+[debug] [2026-01-22T05:17:03.432Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/9c396cac6ddf2196c3cff336ecc7a87c8933e15806d67b767d378ba495bac210 [stream]
+[debug] [2026-01-22T05:17:03.443Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/08c13d74c20da318a51b60ab23c44ce711b1341e58a42bc4a0baccdcedf993f9 200
+[debug] [2026-01-22T05:17:03.443Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/08c13d74c20da318a51b60ab23c44ce711b1341e58a42bc4a0baccdcedf993f9 [stream]
+[debug] [2026-01-22T05:17:03.504Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/a3c5d25b639b5794264e9f9874fe05cc797480055ad5e56aa275692f7ef20809 200
+[debug] [2026-01-22T05:17:03.504Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/a3c5d25b639b5794264e9f9874fe05cc797480055ad5e56aa275692f7ef20809 [stream]
+[debug] [2026-01-22T05:17:03.811Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/309f1f72cda92914377431e4a8e29a33e156582d01b19736f85fcac497a6f979 200
+[debug] [2026-01-22T05:17:03.812Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7/files/309f1f72cda92914377431e4a8e29a33e156582d01b19736f85fcac497a6f979 [stream]
+[debug] [2026-01-22T05:17:03.812Z] [hosting][upload queue][FINAL] {"max":1269,"min":564,"avg":765.4444444444445,"active":0,"complete":18,"success":18,"errored":0,"retried":0,"total":18,"elapsed":1271}
+[info] +  hosting[heliosnrg-2ab01]: file upload complete 
+[debug] [2026-01-22T05:17:03.813Z] [hosting] deploy completed after 1700ms
+[debug] [2026-01-22T05:17:03.814Z] [
+  {
+    "config": {
+      "public": "out",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "site": "heliosnrg-2ab01"
+    },
+    "version": "projects/1004558003022/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7"
+  }
+]
+[info] i  hosting[heliosnrg-2ab01]: finalizing version... 
+[debug] [2026-01-22T05:17:03.820Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:03.820Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:03.821Z] >>> [apiv2][query] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7 updateMask=status%2Cconfig
+[debug] [2026-01-22T05:17:03.821Z] >>> [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7 {"status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]}}
+[debug] [2026-01-22T05:17:03.977Z] <<< [apiv2][status] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7 200
+[debug] [2026-01-22T05:17:03.977Z] <<< [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7 {"name":"projects/1004558003022/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7","status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2026-01-22T05:17:01.677754Z","createUser":{"email":"incubatorprotocol@gmail.com"},"finalizeTime":"2026-01-22T05:17:03.830835Z","finalizeUser":{"email":"incubatorprotocol@gmail.com"}}
+[debug] [2026-01-22T05:17:03.977Z] [hosting] finalized version for heliosnrg-2ab01:[object Object]
+[info] +  hosting[heliosnrg-2ab01]: version finalized 
+[info] i  hosting[heliosnrg-2ab01]: releasing new version... 
+[debug] [2026-01-22T05:17:03.977Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:03.977Z] Checked if tokens are valid: true, expires at: 1769060093131
+[debug] [2026-01-22T05:17:03.977Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/heliosnrg-2ab01/channels/live/releases versionName=projects%2F1004558003022%2Fsites%2Fheliosnrg-2ab01%2Fversions%2F481bb9a85c388fc7
+[debug] [2026-01-22T05:17:03.977Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/heliosnrg-2ab01/channels/live/releases {}
+[debug] [2026-01-22T05:17:04.163Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/heliosnrg-2ab01/channels/live/releases 200
+[debug] [2026-01-22T05:17:04.164Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/heliosnrg-2ab01/channels/live/releases {"name":"projects/1004558003022/sites/heliosnrg-2ab01/channels/live/releases/1769059023475000","version":{"name":"projects/1004558003022/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7","status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2026-01-22T05:17:01.677754Z","createUser":{"email":"incubatorprotocol@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocJWQm1vdFYseP0luG0tQW2L_584O46sqA-KRcGUIYNcMR_QtUc"},"finalizeTime":"2026-01-22T05:17:03.830835Z","finalizeUser":{"email":"incubatorprotocol@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocJWQm1vdFYseP0luG0tQW2L_584O46sqA-KRcGUIYNcMR_QtUc"}},"type":"DEPLOY","releaseTime":"2026-01-22T05:17:03.475Z","releaseUser":{"email":"incubatorprotocol@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocJWQm1vdFYseP0luG0tQW2L_584O46sqA-KRcGUIYNcMR_QtUc"}}
+[debug] [2026-01-22T05:17:04.164Z] [hosting] release: {"name":"projects/1004558003022/sites/heliosnrg-2ab01/channels/live/releases/1769059023475000","version":{"name":"projects/1004558003022/sites/heliosnrg-2ab01/versions/481bb9a85c388fc7","status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2026-01-22T05:17:01.677754Z","createUser":{"email":"incubatorprotocol@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocJWQm1vdFYseP0luG0tQW2L_584O46sqA-KRcGUIYNcMR_QtUc"},"finalizeTime":"2026-01-22T05:17:03.830835Z","finalizeUser":{"email":"incubatorprotocol@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocJWQm1vdFYseP0luG0tQW2L_584O46sqA-KRcGUIYNcMR_QtUc"}},"type":"DEPLOY","releaseTime":"2026-01-22T05:17:03.475Z","releaseUser":{"email":"incubatorprotocol@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocJWQm1vdFYseP0luG0tQW2L_584O46sqA-KRcGUIYNcMR_QtUc"}}
+[info] +  hosting[heliosnrg-2ab01]: release complete 
+[info] 
+[info] +  Deploy complete! 
+[info] 
+[info] Project Console: https://console.firebase.google.com/project/heliosnrg-2ab01/overview
+[info] Hosting URL: https://heliosnrg-2ab01.web.app
+[debug] [2026-01-22T05:17:09.295Z] Error: Timed out.
+    at Timeout._onTimeout (C:\Users\teaga\AppData\Roaming\npm\node_modules\firebase-tools\lib\utils.js:308:49)
+    at listOnTimeout (node:internal/timers:588:17)
+    at process.processTimers (node:internal/timers:523:7)
+[error] 
+[error] Error: An unexpected error has occurred.

@@ -8,7 +8,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-neutral-950 text-neutral-100 relative">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-neutral-800/50">
-        <nav className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
             <span className="text-sm font-mono font-medium tracking-wider">HELIOS</span>
@@ -58,7 +58,7 @@ export default function HomePage() {
             </div>
 
             {/* Stats row */}
-            <div className="flex gap-12">
+            <div className="flex gap-6 sm:gap-12">
               <div>
                 <div className="text-2xl font-mono text-neutral-100">100%</div>
                 <div className="text-xs font-mono text-neutral-600 uppercase tracking-wider">Deterministic</div>
@@ -122,7 +122,7 @@ export default function HomePage() {
       {/* Marquee */}
       <div className="border-y border-neutral-800 py-4 overflow-hidden">
         <div className="marquee">
-          <div className="marquee-content flex items-center gap-8 text-xl font-mono text-neutral-600">
+          <div className="marquee-content flex items-center gap-4 sm:gap-8 text-sm sm:text-xl font-mono text-neutral-600">
             <span>◆ AWS CUR</span>
             <span>◆ GCP BILLING</span>
             <span>◆ AZURE COST</span>
@@ -142,9 +142,9 @@ export default function HomePage() {
       </div>
 
       {/* Features Grid */}
-      <section className="py-24 px-6">
+      <section className="py-12 sm:py-24 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-px bg-neutral-800">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-neutral-800">
             {/* Cost */}
             <div className="bg-neutral-950 p-8 group hover:bg-neutral-900 transition-colors">
               <div className="flex items-center gap-3 mb-6">
@@ -199,13 +199,13 @@ export default function HomePage() {
       </section>
 
       {/* Principles */}
-      <section className="py-24 px-6 border-t border-neutral-800">
+      <section className="py-12 sm:py-24 px-4 sm:px-6 border-t border-neutral-800">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center gap-3 mb-12">
+          <div className="flex items-center gap-3 mb-8 sm:mb-12">
             <span className="text-xs font-mono text-amber-500 uppercase tracking-widest">◆ Core Principles</span>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
             <div>
               <div className="text-3xl font-mono text-neutral-700 mb-4">01</div>
               <h3 className="text-sm font-mono text-neutral-100 mb-2 uppercase tracking-wider">Customer Data First</h3>
@@ -231,7 +231,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 px-6 border-t border-neutral-800">
+      <section className="py-12 sm:py-24 px-4 sm:px-6 border-t border-neutral-800">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl font-display font-medium text-neutral-100 mb-4">
             Ready to see the truth?
@@ -246,7 +246,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-neutral-800 py-8 px-6">
+      <footer className="border-t border-neutral-800 py-6 sm:py-8 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 bg-amber-500 rounded-full" />
