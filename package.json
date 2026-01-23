@@ -7,9 +7,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "video:preview": "remotion preview src/video/index.tsx",
+    "video:render": "remotion render src/video/index.tsx Marketing out/marketing-video.mp4"
   },
   "dependencies": {
+    "@remotion/cli": "^4.0.409",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "firebase": "^12.8.0",
@@ -21,9 +24,10 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "recharts": "^2.10.0",
+    "remotion": "^4.0.409",
     "tailwind-merge": "^2.1.0",
     "uuid": "^9.0.1",
-    "zod": "^3.22.4"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
