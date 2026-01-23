@@ -79,49 +79,57 @@ export function GPUDashboard() {
       where('teamId', '==', currentTeamId)
     );
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const gpuWorkloads = snapshot.docs
-        .filter(doc => {
-          const data = doc.data();
-          const instanceType = (data.instanceType || '').toLowerCase();
-          return instanceType.includes('gpu') || 
-                 instanceType.includes('p3') || 
-                 instanceType.includes('p4') ||
-                 instanceType.includes('p5') ||
-                 instanceType.includes('g4') ||
-                 instanceType.includes('g5') ||
-                 instanceType.includes('a100') ||
-                 instanceType.includes('v100') ||
-                 instanceType.includes('h100') ||
-                 instanceType.includes('t4');
-        })
-        .map(doc => {
-          const data = doc.data();
-          const gpuType = detectGPUType(data.instanceType || '');
-          const specs = GPU_SPECS[gpuType];
-          
-          return {
-            id: doc.id,
-            name: data.name || 'GPU Workload',
-            type: gpuType as GPUMetrics['type'],
-            provider: data.provider || 'Unknown',
-            region: data.region || 'unknown',
-            utilization: data.avgCpuUtilization || Math.random() * 40 + 30,
-            powerDraw: specs ? specs.tdp * (data.avgCpuUtilization || 50) / 100 : 200,
-            maxPower: specs?.tdp || 400,
-            temperature: 45 + Math.random() * 25,
-            memoryUsed: specs ? specs.memory * (0.3 + Math.random() * 0.5) : 40,
-            memoryTotal: specs?.memory || 80,
-            runtimeHours: data.runtimeHours || 0,
-            costPerHour: data.costPerHour || 3.5,
-            energyKwh: data.totalEnergy || 0,
-            carbonKg: data.totalCarbon || 0,
-          };
-        });
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const gpuWorkloads = snapshot.docs
+          .filter(doc => {
+            const data = doc.data();
+            const instanceType = (data.instanceType || '').toLowerCase();
+            return instanceType.includes('gpu') || 
+                   instanceType.includes('p3') || 
+                   instanceType.includes('p4') ||
+                   instanceType.includes('p5') ||
+                   instanceType.includes('g4') ||
+                   instanceType.includes('g5') ||
+                   instanceType.includes('a100') ||
+                   instanceType.includes('v100') ||
+                   instanceType.includes('h100') ||
+                   instanceType.includes('t4');
+          })
+          .map(doc => {
+            const data = doc.data();
+            const gpuType = detectGPUType(data.instanceType || '');
+            const specs = GPU_SPECS[gpuType];
+            
+            return {
+              id: doc.id,
+              name: data.name || 'GPU Workload',
+              type: gpuType as GPUMetrics['type'],
+              provider: data.provider || 'Unknown',
+              region: data.region || 'unknown',
+              utilization: data.avgCpuUtilization || Math.random() * 40 + 30,
+              powerDraw: specs ? specs.tdp * (data.avgCpuUtilization || 50) / 100 : 200,
+              maxPower: specs?.tdp || 400,
+              temperature: 45 + Math.random() * 25,
+              memoryUsed: specs ? specs.memory * (0.3 + Math.random() * 0.5) : 40,
+              memoryTotal: specs?.memory || 80,
+              runtimeHours: data.runtimeHours || 0,
+              costPerHour: data.costPerHour || 3.5,
+              energyKwh: data.totalEnergy || 0,
+              carbonKg: data.totalCarbon || 0,
+            };
+          });
 
-      setGpuMetrics(gpuWorkloads);
-      setIsLoading(false);
-    });
+        setGpuMetrics(gpuWorkloads);
+        setIsLoading(false);
+      },
+      (error) => {
+        // Handle permission errors silently
+        setGpuMetrics([]);
+        setIsLoading(false);
+      }
+    );
 
     return () => unsubscribe();
   }, [currentTeamId]);

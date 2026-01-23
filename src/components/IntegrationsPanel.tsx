@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { collection, query, where, onSnapshot, addDoc, updateDoc, deleteDoc, doc, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 import { COLLECTIONS } from '@/lib/firebase/collections';
+import { useCurrentUser } from '@/components/AuthGuard';
 import { 
   Cloud, 
   Plus, 
@@ -72,10 +73,8 @@ const providerConfig = {
   },
 };
 
-// Team ID would come from auth context in production
-const DEMO_TEAM_ID = 'demo-team';
-
 export function IntegrationsPanel() {
+  const { userData } = useCurrentUser();
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState<keyof typeof providerConfig | null>(null);
@@ -83,33 +82,52 @@ export function IntegrationsPanel() {
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState<Record<string, string>>({});
 
+  // Get team ID from user data
+  const teamId = userData?.currentTeamId || userData?.teamIds?.[0] || null;
+
   // Subscribe to integrations from Firebase
   useEffect(() => {
+    // If no team yet, show empty state
+    if (!teamId) {
+      setIntegrations([]);
+      setIsLoading(false);
+      return;
+    }
+
     const q = query(
       collection(db, COLLECTIONS.INTEGRATIONS),
-      where('teamId', '==', DEMO_TEAM_ID)
+      where('teamId', '==', teamId)
     );
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map(doc => {
-        const d = doc.data();
-        return {
-          id: doc.id,
-          provider: d.provider,
-          name: d.name,
-          status: d.status || 'active',
-          lastSync: d.lastSyncAt ? formatTimeAgo(d.lastSyncAt.toDate()) : 'Never',
-          nextSync: d.status === 'active' ? `in ${d.config?.pollIntervalMinutes || 5} min` : 'paused',
-          pollInterval: d.config?.pollIntervalMinutes || 5,
-          metrics: d.metrics || { workloadsTracked: 0, lastCost: 0, lastEnergy: 0 },
-        } as Integration;
-      });
-      setIntegrations(data);
-      setIsLoading(false);
-    });
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const data = snapshot.docs.map(doc => {
+          const d = doc.data();
+          return {
+            id: doc.id,
+            provider: d.provider,
+            name: d.name,
+            status: d.status || 'active',
+            lastSync: d.lastSyncAt ? formatTimeAgo(d.lastSyncAt.toDate()) : 'Never',
+            nextSync: d.status === 'active' ? `in ${d.config?.pollIntervalMinutes || 5} min` : 'paused',
+            pollInterval: d.config?.pollIntervalMinutes || 5,
+            metrics: d.metrics || { workloadsTracked: 0, lastCost: 0, lastEnergy: 0 },
+          } as Integration;
+        });
+        setIntegrations(data);
+        setIsLoading(false);
+      },
+      (error) => {
+        // Handle permission errors silently - user may not have access yet
+        console.error('Integrations listener error:', error.code);
+        setIntegrations([]);
+        setIsLoading(false);
+      }
+    );
 
     return () => unsubscribe();
-  }, []);
+  }, [teamId]);
 
   const formatTimeAgo = (date: Date) => {
     const now = new Date();
@@ -167,8 +185,9 @@ export function IntegrationsPanel() {
 
     const config = providerConfig[selectedProvider];
     try {
+      if (!teamId) return;
       await addDoc(collection(db, COLLECTIONS.INTEGRATIONS), {
-        teamId: DEMO_TEAM_ID,
+        teamId,
         provider: selectedProvider,
         name: formData.name || `${config.name} Integration`,
         status: 'active',

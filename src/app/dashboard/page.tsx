@@ -66,7 +66,6 @@ function DashboardContent() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (!dataCheckComplete) {
-        console.log('Data check timeout - showing upload prompt');
         setDataCheckComplete(true);
       }
     }, 5000); // 5 second timeout

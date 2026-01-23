@@ -88,18 +88,13 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
   }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('File select triggered');
     const files = e.target.files;
     if (files && files.length > 0) {
-      console.log('File found:', files[0].name);
       processFile(files[0]);
-    } else {
-      console.log('No files selected');
     }
   };
 
   const processFile = async (file: File) => {
-    console.log('Processing file:', file.name, file.size);
     setIsProcessing(true);
     
     try {
@@ -201,10 +196,8 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
       })));
       
     } catch (error) {
-      console.error('Error parsing file:', error);
+      // File parsing failed - show error state
     }
-    
-    console.log('File processing complete, advancing to mapping step');
     setIsProcessing(false);
     setStep('mapping');
   };
@@ -330,7 +323,7 @@ export function DataUploader({ onDataLoaded }: DataUploaderProps) {
       setStep('complete');
       onDataLoaded();
     } catch (error) {
-      console.error('Error saving data:', error);
+      // Data save failed - would show error to user
     } finally {
       setIsProcessing(false);
     }

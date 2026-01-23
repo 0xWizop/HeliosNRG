@@ -135,23 +135,38 @@ export function AlertsNotifications() {
     }
 
     // Load rules
-    const unsubRules = onSnapshot(doc(db, 'alert_rules', currentTeamId), (snapshot) => {
-      if (snapshot.exists()) {
-        setRules(snapshot.data().rules || []);
-      } else {
-        // Initialize with default rules
-        setRules(DEFAULT_RULES);
-        saveRules(DEFAULT_RULES);
+    const unsubRules = onSnapshot(
+      doc(db, 'alert_rules', currentTeamId),
+      (snapshot) => {
+        if (snapshot.exists()) {
+          setRules(snapshot.data().rules || []);
+        } else {
+          // Initialize with default rules
+          setRules(DEFAULT_RULES);
+          saveRules(DEFAULT_RULES);
+        }
+      },
+      (error) => {
+        // Handle permission errors silently
+        setRules([]);
       }
-    });
+    );
 
     // Load notifications
-    const unsubNotifications = onSnapshot(doc(db, 'notifications', currentTeamId), (snapshot) => {
-      if (snapshot.exists()) {
-        setNotifications(snapshot.data().items || []);
+    const unsubNotifications = onSnapshot(
+      doc(db, 'notifications', currentTeamId),
+      (snapshot) => {
+        if (snapshot.exists()) {
+          setNotifications(snapshot.data().items || []);
+        }
+        setIsLoading(false);
+      },
+      (error) => {
+        // Handle permission errors silently
+        setNotifications([]);
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    });
+    );
 
     return () => {
       unsubRules();

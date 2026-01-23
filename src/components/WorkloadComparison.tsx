@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 import { COLLECTIONS } from '@/lib/firebase/collections';
+import { useCurrentUser } from '@/components/AuthGuard';
 import { Plus, X, ArrowUpDown, Zap, DollarSign, Leaf, RefreshCw, Database } from 'lucide-react';
 import { ConfidenceBadge } from './ConfidenceBadge';
 
@@ -21,26 +22,36 @@ interface Workload {
   confidence: number;
 }
 
-// Demo team ID - would come from auth context in production
-const DEMO_TEAM_ID = 'demo-team';
-
 type SortKey = 'cost' | 'energyKwh' | 'carbonKg' | 'efficiency';
 
 export function WorkloadComparison() {
+  const { userData } = useCurrentUser();
   const [workloads, setWorkloads] = useState<Workload[]>([]);
   const [selectedWorkloads, setSelectedWorkloads] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<SortKey>('cost');
   const [showSelector, setShowSelector] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Get team ID from user data
+  const teamId = userData?.currentTeamId || userData?.teamIds?.[0] || null;
+
   // Subscribe to workloads from Firebase
   useEffect(() => {
+    // If no team yet, show empty state
+    if (!teamId) {
+      setWorkloads([]);
+      setIsLoading(false);
+      return;
+    }
+
     const q = query(
       collection(db, COLLECTIONS.WORKLOADS),
-      where('teamId', '==', DEMO_TEAM_ID)
+      where('teamId', '==', teamId)
     );
 
-    const unsubscribe = onSnapshot(q, async (snapshot) => {
+    const unsubscribe = onSnapshot(
+      q,
+      async (snapshot) => {
       const workloadData: Workload[] = [];
       
       for (const docSnap of snapshot.docs) {
@@ -70,10 +81,17 @@ export function WorkloadComparison() {
         setSelectedWorkloads([workloadData[0].id]);
       }
       setIsLoading(false);
-    });
+    },
+    (error) => {
+      // Handle permission errors silently - user may not have access yet
+      console.error('Workloads listener error:', error.code);
+      setWorkloads([]);
+      setIsLoading(false);
+    }
+  );
 
     return () => unsubscribe();
-  }, []);
+  }, [teamId]);
 
   const selected = workloads.filter(w => selectedWorkloads.includes(w.id));
   const available = workloads.filter(w => !selectedWorkloads.includes(w.id));

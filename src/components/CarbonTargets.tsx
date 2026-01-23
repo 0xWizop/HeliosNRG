@@ -68,13 +68,21 @@ export function CarbonTargets() {
       return;
     }
 
-    const unsubscribe = onSnapshot(doc(db, 'carbon_targets', currentTeamId), (snapshot) => {
-      if (snapshot.exists()) {
-        const data = snapshot.data();
-        setTargets(data.targets || []);
+    const unsubscribe = onSnapshot(
+      doc(db, 'carbon_targets', currentTeamId),
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+          setTargets(data.targets || []);
+        }
+        setIsLoading(false);
+      },
+      (error) => {
+        // Handle permission errors silently
+        setTargets([]);
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    });
+    );
 
     return () => unsubscribe();
   }, [currentTeamId]);
