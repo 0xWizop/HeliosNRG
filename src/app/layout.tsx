@@ -18,6 +18,9 @@ export const metadata: Metadata = {
     template: '%s | Helios',
   },
   description: 'Decision-grade AI infrastructure cost & energy intelligence platform. Analyze, model, and reduce the cost and energy footprint of your AI and data infrastructure.',
+  icons: {
+    icon: '/favicon.ico',
+  },
   openGraph: {
     type: 'website',
     siteName: 'Helios',
